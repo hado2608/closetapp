@@ -10,7 +10,110 @@ import 'dart:ui' as UI;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() => runApp(ClosetApp());
+void main() {
+  runApp(MaterialApp(
+    title: 'Navigation Basics',
+    home: HomePage(),
+  ));
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Homepage'),
+      ),
+      body: Center(
+          child: Column(
+        children: [
+          ElevatedButton(
+            child: Text('View Outfits'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ViewOutfitsPage()),
+              );
+            },
+          ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CombineClothesPage()),
+                );
+              },
+              child: Text('Make a New Outfit')),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PaintingApp()),
+                );
+              },
+              child: Text('Add Clothes to Closet')),
+        ],
+      )),
+    );
+  }
+}
+
+class ViewOutfitsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("View Outfits Page"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+class CombineClothesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Combine Clothes Page"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+// class AddClothesToClosetPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Add Clothes to Closet"),
+//       ),
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: () {
+//             Navigator.pop(context);
+//           },
+//           child: Text('Go back!'),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class ClosetApp extends StatelessWidget {
   @override
