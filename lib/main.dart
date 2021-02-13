@@ -125,6 +125,9 @@ class ClosetApp extends StatelessWidget {
   }
 }
 
+const int dashWidth = 4;
+const int dashSpace = 4;
+
 class PaintingApp extends StatefulWidget {
   @override
   _PaintingAppState createState() => _PaintingAppState();
@@ -152,7 +155,9 @@ class _PaintingAppState extends State<PaintingApp> {
       },
       onPanEnd: (details) {
         setState(() {
-          _offsets.add(null);
+          for (var i = 0; i < dashWidth; i++) {
+            _offsets.add(null);
+          }
         });
       },
       child: Center(
@@ -174,21 +179,22 @@ class Painter extends CustomPainter {
   Painter(this.offsets) : super();
 
   @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+
+  @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = Colors.deepPurple
       ..isAntiAlias = true
       ..strokeWidth = 3.0;
 
-    for (var i = 0; i < offsets.length; i++) {
-      if (offsets[i] != null && offsets[i + 1] != null) {
-        canvas.drawLine(offsets[i], offsets[i + 1], paint);
-      } else if (offsets[i] != null && offsets[i + 1] == null) {
+    for (var i = 0; i < offsets.length - 1; i++) {
+      if (offsets[i] != null && offsets[i + dashWidth] != null) {
+        canvas.drawLine(offsets[i], offsets[i + dashWidth], paint);
+        i += dashWidth + dashSpace;
+      } else if (offsets[i] != null && offsets[i + dashWidth] == null) {
         canvas.drawPoints(PointMode.points, [offsets[i]], paint);
       }
     }
   }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
