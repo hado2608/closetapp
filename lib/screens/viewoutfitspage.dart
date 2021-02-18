@@ -1,24 +1,7 @@
 import 'package:flutter/material.dart';
 import 'details_page.dart';
 
-// class ViewOutfitsPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("View Outfits Page"),
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () {
-//             Navigator.pop(context);
-//           },
-//           child: Text('Go back!'),
-//         ),
-//       ),
-//     );
-//   }
-// }
+//https://github.com/kaycobad/gallery_app
 
 class ViewOutfitsPage extends StatelessWidget {
   @override

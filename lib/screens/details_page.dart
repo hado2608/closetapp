@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//https://github.com/kaycobad/gallery_app
+
 class DetailsPage extends StatelessWidget {
   final String imagePath;
   final String title;
