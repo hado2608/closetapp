@@ -4,6 +4,8 @@ import 'package:closetapp/screens/viewoutfitspage.dart';
 import 'package:closetapp/screens/combineclothespage.dart';
 import 'package:closetapp/screens/paintingapp.dart';
 
+//Code from: https://flutter.dev/docs/cookbook/navigation/navigation-basics
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

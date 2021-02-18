@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 class DetailsPage extends StatelessWidget {
   final String imagePath;
   final String title;
-  final String photographer;
-  final String price;
   final String details;
   final int index;
   DetailsPage(
       {@required this.imagePath,
       @required this.title,
-      @required this.photographer,
-      @required this.price,
       @required this.details,
       @required this.index});
   @override
@@ -55,20 +51,6 @@ class DetailsPage extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Text(
-                          'By $photographer',
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                        Text(
-                          price,
-                          style: TextStyle(
-                            color: Colors.lightBlueAccent,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -107,7 +89,7 @@ class DetailsPage extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: 15),
                           color: Colors.lightBlueAccent,
                           child: Text(
-                            'Buy',
+                            'Edit',
                             style: TextStyle(
                               color: Colors.white,
                             ),
