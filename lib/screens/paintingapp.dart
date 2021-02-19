@@ -5,22 +5,31 @@ import 'dart:ui' as UI;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 const int dashWidth = 4;
 const int dashSpace = 4;
 
 class PaintingApp extends StatefulWidget {
+  final XFile fileImage;
+
+  const PaintingApp({
+    Key key,
+    @required this.fileImage,
+  }) : super(key: key);
+
   @override
-  _PaintingAppState createState() => _PaintingAppState();
+  _PaintingAppState createState() => _PaintingAppState(fileImage);
 }
 
 class _PaintingAppState extends State<PaintingApp> {
+  XFile fileImage;
   UI.Image image;
   bool isImageLoaded = false;
-  List<CameraDescription> cameras;
-  CameraDescription firstCamera;
   final _offsets = <Offset>[];
+
+  _PaintingAppState(XFile fi) {
+    this.fileImage = fi;
+  }
 
   void initState() {
     super.initState();
@@ -28,15 +37,11 @@ class _PaintingAppState extends State<PaintingApp> {
   }
 
   Future<Null> init() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    cameras = await availableCameras();
-    firstCamera = cameras.first;
-    final ByteData data =
-        await rootBundle.load('assets/images/yellowshirt.jpg');
-    image = await getImage(Uint8List.view(data.buffer));
+    final Uint8List data = await fileImage.readAsBytes();
+    image = await getImage(data);
   }
 
-  Future<UI.Image> getImage(List<int> img) async {
+  Future<UI.Image> getImage(Uint8List img) {
     final Completer<UI.Image> completer = Completer();
     UI.decodeImageFromList(img, (UI.Image img) {
       setState(() {
@@ -104,7 +109,7 @@ class Painter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawImage(im, new Offset(25, 200), new Paint());
+    canvas.drawImage(im, new Offset(0, 0), new Paint());
 
     for (var i = 0; i < offsets.length - dashWidth; i++) {
       if (offsets[i] != null && offsets[i + dashWidth] != null) {
