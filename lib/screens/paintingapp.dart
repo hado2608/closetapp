@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 const int dashWidth = 4;
 const int dashSpace = 4;
+List<Path> crops;
 
 class PaintingApp extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class _PaintingAppState extends State<PaintingApp> {
   List<CameraDescription> cameras;
   CameraDescription firstCamera;
   final _offsets = <Offset>[];
+  List<Path> _paths;
+  Path path;
 
   void initState() {
     super.initState();
@@ -92,10 +95,14 @@ class _PaintingAppState extends State<PaintingApp> {
 class Painter extends CustomPainter {
   UI.Image im;
   final offsets;
+  Path path = Path();
   final brush = Paint()
     ..color = Colors.deepPurple
     ..isAntiAlias = true
-    ..strokeWidth = 3.0;
+    ..strokeWidth = 3.0
+    ..style = PaintingStyle.stroke;
+
+  final clearBrush = Paint()..blendMode = BlendMode.clear;
 
   Painter(this.offsets, this.im);
 
@@ -106,13 +113,28 @@ class Painter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.drawImage(im, new Offset(25, 200), new Paint());
 
-    for (var i = 0; i < offsets.length - dashWidth; i++) {
+    for (var i = 0; i < offsets.length - dashWidth - 1; i++) {
+      // for (PathMetric pathMetric in path.computeMetrics()) {
+      // while (offsets[i] < pathMetric.length) {
       if (offsets[i] != null && offsets[i + dashWidth] != null) {
-        canvas.drawLine(offsets[i], offsets[i + dashWidth], brush);
+        path.moveTo(offsets[i].dx, offsets[i].dy);
+        path.lineTo(offsets[i + dashWidth].dx, offsets[i + dashWidth].dy);
+        // Path segment =
+        //     pathMetric.extractPath(offsets[i], offsets[i + dashWidth]);
+        // path.addPath(segment, Offset.zero);
+        canvas.drawPath(path, brush);
         i += dashWidth + dashSpace;
       } else if (offsets[i] != null && offsets[i + dashWidth] == null) {
         canvas.drawPoints(PointMode.points, [offsets[i]], brush);
       }
     }
+    // }
+    // }
   }
+
+  // croppedImage(image) {
+  //   PictureRecorder recorder = PictureRecorder();
+  //   Canvas canvas = Canvas(recorder);
+  //   canvas.drawImage(image, new Offset(25, 200), new Paint());
+  // }
 }
