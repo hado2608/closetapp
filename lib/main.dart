@@ -11,36 +11,3 @@ void main() {
     home: HomePage(),
   ));
 }
-
-// class AddClothesToClosetPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Add Clothes to Closet"),
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () {
-//             Navigator.pop(context);
-//           },
-//           child: Text('Go back!'),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class ClosetApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Painting App',
-//       theme: ThemeData(
-//         // Add the 3 lines from here...
-//         primaryColor: Colors.white,
-//       ),
-//       home: PaintingApp(),
-//     );
-//   }
-// }
