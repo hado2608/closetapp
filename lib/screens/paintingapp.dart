@@ -4,11 +4,14 @@ import 'dart:ui';
 import 'dart:ui' as UI;
 
 import 'package:camera/camera.dart';
+import 'package:closetapp/screens/croppedimage.dart';
 import 'package:flutter/material.dart';
 
 const int dashWidth = 4;
 const int dashSpace = 4;
 List<Path> crops;
+Path path = Path();
+Path path2 = Path()..fillType = PathFillType.evenOdd;
 
 class PaintingApp extends StatefulWidget {
   final XFile fileImage;
@@ -27,8 +30,6 @@ class _PaintingAppState extends State<PaintingApp> {
   UI.Image image;
   bool isImageLoaded = false;
   final _offsets = <Offset>[];
-  List<Path> _paths;
-  Path path;
 
   _PaintingAppState(XFile fi) {
     this.fileImage = fi;
@@ -55,42 +56,62 @@ class _PaintingAppState extends State<PaintingApp> {
     return completer.future;
   }
 
+  cropSelection() async {
+    PictureRecorder recorder = PictureRecorder();
+    Canvas canvas = Canvas(recorder);
+    canvas.drawImage(image, new Offset(0, 0), new Paint());
+    // for (double i; i < image.height * image.width; i++) {}
+    // final picture = recorder.endRecording();
+    // final img = await picture.toImage(300, 300);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CroppedImage(image: image)));
+  }
+
   @override
   Widget build(BuildContext context) {
     if (this.isImageLoaded) {
       return Scaffold(
-          body: GestureDetector(
-        onPanStart: (details) {
-          final renderBox = context.findRenderObject() as RenderBox;
-          final localPosition = renderBox.globalToLocal(details.globalPosition);
-          setState(() {
-            _offsets.add(localPosition);
-          });
-        },
-        onPanUpdate: (details) {
-          final renderBox = context.findRenderObject() as RenderBox;
-          final localPosition = renderBox.globalToLocal(details.globalPosition);
-          setState(() {
-            _offsets.add(localPosition);
-          });
-        },
-        onPanEnd: (details) {
-          setState(() {
-            for (var i = 0; i < dashWidth; i++) {
-              _offsets.add(null);
-            }
-          });
-        },
-        child: Center(
-          child: CustomPaint(
-            painter: Painter(_offsets, image),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
+        body: GestureDetector(
+          onPanStart: (details) {
+            final renderBox = context.findRenderObject() as RenderBox;
+            final localPosition =
+                renderBox.globalToLocal(details.globalPosition);
+            setState(() {
+              _offsets.add(localPosition);
+            });
+          },
+          onPanUpdate: (details) {
+            final renderBox = context.findRenderObject() as RenderBox;
+            final localPosition =
+                renderBox.globalToLocal(details.globalPosition);
+            setState(() {
+              _offsets.add(localPosition);
+            });
+          },
+          onPanEnd: (details) {
+            setState(() {
+              for (var i = 0; i < dashWidth; i++) {
+                _offsets.add(null);
+              }
+            });
+          },
+          child: Center(
+            child: CustomPaint(
+              painter: Painter(_offsets, image),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+              ),
             ),
           ),
         ),
-      ));
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: () {
+            cropSelection();
+          },
+        ),
+      );
     } else {
       return CircularProgressIndicator();
     }
@@ -100,14 +121,16 @@ class _PaintingAppState extends State<PaintingApp> {
 class Painter extends CustomPainter {
   UI.Image im;
   final offsets;
-  Path path = Path();
   final brush = Paint()
-    ..color = Colors.deepPurple
+    ..color = Colors.red
     ..isAntiAlias = true
     ..strokeWidth = 3.0
     ..style = PaintingStyle.stroke;
 
-  final clearBrush = Paint()..blendMode = BlendMode.clear;
+  final brush2 = Paint()
+    ..color = Color(0xFFFFFFF)
+    ..isAntiAlias = true
+    ..style = PaintingStyle.fill;
 
   Painter(this.offsets, this.im);
 
@@ -116,30 +139,39 @@ class Painter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawImage(im, new Offset(0, 0), new Paint());
+    canvas.drawImage(im, new Offset(25, 200), new Paint());
 
-    for (var i = 0; i < offsets.length - dashWidth - 1; i++) {
-      // for (PathMetric pathMetric in path.computeMetrics()) {
-      // while (offsets[i] < pathMetric.length) {
+    Path tempPath = Path();
+
+    for (var i = 0; i < offsets.length; i++) {
+      if (offsets[i] != null) {
+        if (i == 0) {
+          tempPath.moveTo(offsets[i].dx, offsets[i].dy);
+        }
+        tempPath.lineTo(offsets[i].dx, offsets[i].dy);
+      }
+    }
+    for (var i = 0; i < offsets.length - dashWidth; i++) {
       if (offsets[i] != null && offsets[i + dashWidth] != null) {
         path.moveTo(offsets[i].dx, offsets[i].dy);
         path.lineTo(offsets[i + dashWidth].dx, offsets[i + dashWidth].dy);
-        // Path segment =
-        //     pathMetric.extractPath(offsets[i], offsets[i + dashWidth]);
-        // path.addPath(segment, Offset.zero);
-        canvas.drawPath(path, brush);
         i += dashWidth + dashSpace;
-      } else if (offsets[i] != null && offsets[i + dashWidth] == null) {
-        canvas.drawPoints(PointMode.points, [offsets[i]], brush);
+        // } else if (offsets[i] != null && offsets[i + dashWidth] == null) {
+        //   // canvas.drawPoints(PointMode.points, [offsets[i]], brush);
+        //   path.lineTo(offsets[i].dx, offsets[i].dy);
+        // }
       }
     }
-    // }
-    // }
-  }
+    // tempPath.close();
+    canvas.drawPath(tempPath, brush2);
+    canvas.drawPath(path, brush);
 
-  // croppedImage(image) {
-  //   PictureRecorder recorder = PictureRecorder();
-  //   Canvas canvas = Canvas(recorder);
-  //   canvas.drawImage(image, new Offset(25, 200), new Paint());
-  // }
+    // Path path3 = Path();
+    // path3.moveTo(50, 100);
+    // path3.lineTo(100, 200);
+    // path3.lineTo(300, 300);
+    // path3.lineTo(70, 500);
+    // // path2.close();
+    // canvas.drawPath(path3, brush2);
+  }
 }
