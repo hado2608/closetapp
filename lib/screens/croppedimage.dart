@@ -47,8 +47,8 @@ class _CroppedImageState extends State<CroppedImage> {
         child: CustomPaint(
           painter: DisplayImage(img),
           child: Container(
-            width: 500,
-            height: 500,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
           ),
         ),
       ),

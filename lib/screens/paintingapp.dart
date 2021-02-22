@@ -56,15 +56,23 @@ class _PaintingAppState extends State<PaintingApp> {
     return completer.future;
   }
 
-  cropSelection() async {
+  Future<UI.Image> cropSelection() async {
     PictureRecorder recorder = PictureRecorder();
     Canvas canvas = Canvas(recorder);
-    canvas.drawImage(image, new Offset(0, 0), new Paint());
+    Painter painter = Painter(_offsets, image);
+    var size = context.size;
+    painter.paint(canvas, size);
+    final picture = recorder.endRecording();
+    final img = picture.toImage(1000, 1000);
     // for (double i; i < image.height * image.width; i++) {}
     // final picture = recorder.endRecording();
     // final img = await picture.toImage(300, 300);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CroppedImage(image: image)));
+    return img;
+  }
+
+  runCrop() {
+    cropSelection().then((value) => Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CroppedImage(image: value))));
   }
 
   @override
@@ -108,7 +116,7 @@ class _PaintingAppState extends State<PaintingApp> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.check),
           onPressed: () {
-            cropSelection();
+            runCrop();
           },
         ),
       );
@@ -121,6 +129,7 @@ class _PaintingAppState extends State<PaintingApp> {
 class Painter extends CustomPainter {
   UI.Image im;
   final offsets;
+  final blendMode = BlendMode.clear;
   final brush = Paint()
     ..color = Colors.red
     ..isAntiAlias = true
@@ -141,7 +150,7 @@ class Painter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.drawImage(im, new Offset(25, 200), new Paint());
 
-    Path tempPath = Path();
+    Path tempPath = Path()..fillType = PathFillType.evenOdd;
 
     for (var i = 0; i < offsets.length; i++) {
       if (offsets[i] != null) {
@@ -151,6 +160,7 @@ class Painter extends CustomPainter {
         tempPath.lineTo(offsets[i].dx, offsets[i].dy);
       }
     }
+
     for (var i = 0; i < offsets.length - dashWidth; i++) {
       if (offsets[i] != null && offsets[i + dashWidth] != null) {
         path.moveTo(offsets[i].dx, offsets[i].dy);
@@ -163,8 +173,17 @@ class Painter extends CustomPainter {
       }
     }
     // tempPath.close();
-    canvas.drawPath(tempPath, brush2);
-    canvas.drawPath(path, brush);
+    // if (tempPath != null) {
+    // canvas.drawPath(tempPath, brush2);
+    // } else {
+    //   canvas.clipPath(path)
+    // }
+    canvas.drawPath(tempPath, brush);
+    canvas.saveLayer(tempPath.getBounds(), brush);
+    canvas.clipPath(tempPath);
+    canvas.restore();
+    // canvas.drawPath(path, brush);
+    // path2.addPath(tempPath, Offset.zero);
 
     // Path path3 = Path();
     // path3.moveTo(50, 100);
