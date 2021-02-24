@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 
 const int dashWidth = 4;
 const int dashSpace = 4;
-List<Path> crops;
 Path path = Path();
 Path path2 = Path()..fillType = PathFillType.evenOdd;
+final pathOffsets = <Offset>[];
 
 class PaintingApp extends StatefulWidget {
   final XFile fileImage;
@@ -30,6 +30,10 @@ class _PaintingAppState extends State<PaintingApp> {
   UI.Image image;
   bool isImageLoaded = false;
   final _offsets = <Offset>[];
+  final clearBrush = Paint()
+    ..color = Color(0xFFFFFFF)
+    ..isAntiAlias = true
+    ..style = PaintingStyle.fill;
 
   _PaintingAppState(XFile fi) {
     this.fileImage = fi;
@@ -59,14 +63,13 @@ class _PaintingAppState extends State<PaintingApp> {
   Future<UI.Image> cropSelection() async {
     PictureRecorder recorder = PictureRecorder();
     Canvas canvas = Canvas(recorder);
+
     Painter painter = Painter(_offsets, image);
     var size = context.size;
     painter.paint(canvas, size);
+
     final picture = recorder.endRecording();
     final img = picture.toImage(1000, 1000);
-    // for (double i; i < image.height * image.width; i++) {}
-    // final picture = recorder.endRecording();
-    // final img = await picture.toImage(300, 300);
     return img;
   }
 
@@ -129,7 +132,6 @@ class _PaintingAppState extends State<PaintingApp> {
 class Painter extends CustomPainter {
   UI.Image im;
   final offsets;
-  final blendMode = BlendMode.clear;
   final brush = Paint()
     ..color = Colors.red
     ..isAntiAlias = true
@@ -137,6 +139,12 @@ class Painter extends CustomPainter {
     ..style = PaintingStyle.stroke;
 
   final brush2 = Paint()
+    // ..color = Color(0xFFFFFFF)
+    ..isAntiAlias = true
+    ..style = PaintingStyle.fill
+    ..blendMode = BlendMode.dstOut;
+
+  final brush3 = Paint()
     ..color = Color(0xFFFFFFF)
     ..isAntiAlias = true
     ..style = PaintingStyle.fill;
@@ -148,6 +156,8 @@ class Painter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    // canvas.saveLayer(Rect.fromLTWH(0, 0, size.width, size.height), Paint());
+
     canvas.drawImage(im, new Offset(25, 200), new Paint());
 
     Path tempPath = Path()..fillType = PathFillType.evenOdd;
@@ -158,8 +168,15 @@ class Painter extends CustomPainter {
           tempPath.moveTo(offsets[i].dx, offsets[i].dy);
         }
         tempPath.lineTo(offsets[i].dx, offsets[i].dy);
+        // canvas.drawPath(tempPath, brush3);
       }
+      // canvas.drawPath(tempPath, brush2);
     }
+    canvas.save();
+
+    canvas.restore();
+
+    canvas.drawImage(im.clone(), new Offset(25, 200), new Paint());
 
     for (var i = 0; i < offsets.length - dashWidth; i++) {
       if (offsets[i] != null && offsets[i + dashWidth] != null) {
@@ -172,25 +189,12 @@ class Painter extends CustomPainter {
         // }
       }
     }
-    // tempPath.close();
-    // if (tempPath != null) {
-    // canvas.drawPath(tempPath, brush2);
-    // } else {
-    //   canvas.clipPath(path)
-    // }
-    canvas.drawPath(tempPath, brush);
-    canvas.saveLayer(tempPath.getBounds(), brush);
-    canvas.clipPath(tempPath);
-    canvas.restore();
-    // canvas.drawPath(path, brush);
-    // path2.addPath(tempPath, Offset.zero);
 
-    // Path path3 = Path();
-    // path3.moveTo(50, 100);
-    // path3.lineTo(100, 200);
-    // path3.lineTo(300, 300);
-    // path3.lineTo(70, 500);
-    // // path2.close();
-    // canvas.drawPath(path3, brush2);
+    canvas.drawPath(path, brush);
+    canvas.saveLayer(
+        Rect.fromLTWH(0, 0, tempPath.getBounds().size.width,
+            tempPath.getBounds().size.height),
+        Paint()..blendMode = BlendMode.dstIn);
+    canvas.restore();
   }
 }
