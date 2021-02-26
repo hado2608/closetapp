@@ -29,7 +29,9 @@ class _PaintingAppState extends State<PaintingApp> {
   XFile fileImage;
   UI.Image image;
   bool isImageLoaded = false;
-  final _cropPaths = <Path>[];
+  Path pathInProgress;
+  Path cropArea = Path();
+  var pathsToPaint = <Path>[];
   final clearBrush = Paint()
     ..color = Color(0xFFFFFFF)
     ..isAntiAlias = true
@@ -66,16 +68,11 @@ class _PaintingAppState extends State<PaintingApp> {
 
     canvas.drawImage(image, new Offset(0, 0), new Paint());
 
-    Path unifiedCrop = Path();
-    for (var path in _cropPaths) {
-      unifiedCrop = Path.combine(PathOperation.union, path, unifiedCrop);
-    }
-
     Path wholeImagePath = Path()
       ..addRect(
           Offset.zero & Size(image.width.toDouble(), image.height.toDouble()));
     Path areaToCrop =
-        Path.combine(PathOperation.difference, wholeImagePath, unifiedCrop);
+        Path.combine(PathOperation.difference, wholeImagePath, cropArea);
     canvas.drawPath(
         areaToCrop,
         Paint()
@@ -101,8 +98,9 @@ class _PaintingAppState extends State<PaintingApp> {
             final localPosition =
                 renderBox.globalToLocal(details.globalPosition);
             setState(() {
-              _cropPaths
-                  .add(Path()..moveTo(localPosition.dx, localPosition.dy));
+              pathInProgress = Path()
+                ..moveTo(localPosition.dx, localPosition.dy);
+              pathsToPaint.add(pathInProgress);
             });
           },
           onPanUpdate: (details) {
@@ -110,17 +108,21 @@ class _PaintingAppState extends State<PaintingApp> {
             final localPosition =
                 renderBox.globalToLocal(details.globalPosition);
             setState(() {
-              _cropPaths.last.lineTo(localPosition.dx, localPosition.dy);
+              pathInProgress.lineTo(localPosition.dx, localPosition.dy);
             });
           },
           onPanEnd: (details) {
             setState(() {
-              _cropPaths.last.close();
+              pathInProgress.close();
+              cropArea =
+                  Path.combine(PathOperation.union, pathInProgress, cropArea);
+              pathsToPaint.clear();
+              pathsToPaint.add(cropArea);
             });
           },
           child: Center(
             child: CustomPaint(
-              painter: CropMarkPainter(_cropPaths, image),
+              painter: CropMarkPainter(pathsToPaint, image),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
