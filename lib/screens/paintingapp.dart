@@ -29,7 +29,7 @@ class _PaintingAppState extends State<PaintingApp> {
   XFile fileImage;
   UI.Image image;
   bool isImageLoaded = false;
-  final _offsets = <Offset>[];
+  final _cropPaths = <Path>[];
   final clearBrush = Paint()
     ..color = Color(0xFFFFFFF)
     ..isAntiAlias = true
@@ -64,19 +64,15 @@ class _PaintingAppState extends State<PaintingApp> {
     PictureRecorder recorder = PictureRecorder();
     Canvas canvas = Canvas(recorder);
 
-    Painter painter = Painter(_offsets, image);
-    var size = context.size;
-    painter.paint(canvas, size);
+  //   final picture = recorder.endRecording();
+  //   final img = picture.toImage(1000, 1000);
+  //   return img;
+  // }
 
-    final picture = recorder.endRecording();
-    final img = picture.toImage(1000, 1000);
-    return img;
-  }
-
-  runCrop() {
-    cropSelection().then((value) => Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CroppedImage(image: value))));
-  }
+  // runCrop() {
+  //   cropSelection().then((value) => Navigator.push(context,
+  //       MaterialPageRoute(builder: (context) => CroppedImage(image: value))));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +84,8 @@ class _PaintingAppState extends State<PaintingApp> {
             final localPosition =
                 renderBox.globalToLocal(details.globalPosition);
             setState(() {
-              _offsets.add(localPosition);
+              _cropPaths
+                  .add(Path()..moveTo(localPosition.dx, localPosition.dy));
             });
           },
           onPanUpdate: (details) {
@@ -96,19 +93,17 @@ class _PaintingAppState extends State<PaintingApp> {
             final localPosition =
                 renderBox.globalToLocal(details.globalPosition);
             setState(() {
-              _offsets.add(localPosition);
+              _cropPaths.last.lineTo(localPosition.dx, localPosition.dy);
             });
           },
           onPanEnd: (details) {
             setState(() {
-              for (var i = 0; i < dashWidth; i++) {
-                _offsets.add(null);
-              }
+              _cropPaths.last.close();
             });
           },
           child: Center(
             child: CustomPaint(
-              painter: Painter(_offsets, image),
+              painter: CropMarkPainter(_cropPaths, image),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
@@ -129,72 +124,26 @@ class _PaintingAppState extends State<PaintingApp> {
   }
 }
 
-class Painter extends CustomPainter {
+class CropMarkPainter extends CustomPainter {
   UI.Image im;
-  final offsets;
+  final List<Path> cropPaths;
   final brush = Paint()
     ..color = Colors.red
     ..isAntiAlias = true
     ..strokeWidth = 3.0
     ..style = PaintingStyle.stroke;
 
-  final brush2 = Paint()
-    // ..color = Color(0xFFFFFFF)
-    ..isAntiAlias = true
-    ..style = PaintingStyle.fill
-    ..blendMode = BlendMode.dstOut;
-
-  final brush3 = Paint()
-    ..color = Color(0xFFFFFFF)
-    ..isAntiAlias = true
-    ..style = PaintingStyle.fill;
-
-  Painter(this.offsets, this.im);
+  CropMarkPainter(this.cropPaths, this.im);
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 
   @override
   void paint(Canvas canvas, Size size) {
-    // canvas.saveLayer(Rect.fromLTWH(0, 0, size.width, size.height), Paint());
-
     canvas.drawImage(im, new Offset(25, 200), new Paint());
 
-    Path tempPath = Path()..fillType = PathFillType.evenOdd;
-
-    for (var i = 0; i < offsets.length; i++) {
-      if (offsets[i] != null) {
-        if (i == 0) {
-          tempPath.moveTo(offsets[i].dx, offsets[i].dy);
-        }
-        tempPath.lineTo(offsets[i].dx, offsets[i].dy);
-        // canvas.drawPath(tempPath, brush3);
-      }
-      // canvas.drawPath(tempPath, brush2);
+    for (var path in cropPaths) {
+      canvas.drawPath(path, brush);
     }
-    canvas.save();
-
-    canvas.restore();
-
-    canvas.drawImage(im.clone(), new Offset(25, 200), new Paint());
-
-    for (var i = 0; i < offsets.length - dashWidth; i++) {
-      if (offsets[i] != null && offsets[i + dashWidth] != null) {
-        path.moveTo(offsets[i].dx, offsets[i].dy);
-        path.lineTo(offsets[i + dashWidth].dx, offsets[i + dashWidth].dy);
-        i += dashWidth + dashSpace;
-        // } else if (offsets[i] != null && offsets[i + dashWidth] == null) {
-        //   // canvas.drawPoints(PointMode.points, [offsets[i]], brush);
-        //   path.lineTo(offsets[i].dx, offsets[i].dy);
-        // }
-      }
-    }
-
-    canvas.drawPath(path, brush);
-    canvas.saveLayer(
-        Rect.fromLTWH(0, 0, tempPath.getBounds().size.width,
-            tempPath.getBounds().size.height),
-        Paint()..blendMode = BlendMode.dstIn);
-    canvas.restore();
   }
 }
