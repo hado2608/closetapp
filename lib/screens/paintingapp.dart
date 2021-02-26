@@ -64,15 +64,32 @@ class _PaintingAppState extends State<PaintingApp> {
     PictureRecorder recorder = PictureRecorder();
     Canvas canvas = Canvas(recorder);
 
-  //   final picture = recorder.endRecording();
-  //   final img = picture.toImage(1000, 1000);
-  //   return img;
-  // }
+    canvas.drawImage(image, new Offset(0, 0), new Paint());
 
-  // runCrop() {
-  //   cropSelection().then((value) => Navigator.push(context,
-  //       MaterialPageRoute(builder: (context) => CroppedImage(image: value))));
-  // }
+    Path unifiedCrop = Path();
+    for (var path in _cropPaths) {
+      unifiedCrop = Path.combine(PathOperation.union, path, unifiedCrop);
+    }
+
+    Path wholeImagePath = Path()
+      ..addRect(
+          Offset.zero & Size(image.width.toDouble(), image.height.toDouble()));
+    Path areaToCrop =
+        Path.combine(PathOperation.difference, wholeImagePath, unifiedCrop);
+    canvas.drawPath(
+        areaToCrop,
+        Paint()
+          ..color = Colors.transparent
+          ..blendMode = BlendMode.clear);
+
+    final picture = recorder.endRecording();
+    return picture.toImage(image.width, image.height);
+  }
+
+  runCrop() {
+    cropSelection().then((value) => Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CroppedImage(image: value))));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +157,7 @@ class CropMarkPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawImage(im, new Offset(25, 200), new Paint());
+    canvas.drawImage(im, new Offset(0, 0), new Paint());
 
     for (var path in cropPaths) {
       canvas.drawPath(path, brush);
