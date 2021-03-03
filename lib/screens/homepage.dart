@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:closetapp/clothingdatabase.dart';
 import 'package:flutter/material.dart';
 
 import 'package:closetapp/screens/viewoutfitspage.dart';
@@ -13,10 +14,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<CameraDescription> cameras;
   CameraDescription firstCamera;
+  final ClothingDatabase clothingDatabase = new ClothingDatabase();
 
   void initState() {
     super.initState();
     cameraInit();
+    clothingDatabase.startDatabase();
   }
 
   void cameraInit() async {
@@ -39,7 +42,9 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ViewOutfitsPage()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ViewOutfitsPage(clothingDatabase: clothingDatabase)),
               );
             },
           ),
@@ -56,8 +61,10 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          TakePictureScreen(camera: firstCamera)),
+                      builder: (context) => TakePictureScreen(
+                            camera: firstCamera,
+                            clothingDatabase: clothingDatabase,
+                          )),
                 );
               },
               child: Text('Add Clothes to Closet')),

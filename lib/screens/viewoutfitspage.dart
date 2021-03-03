@@ -1,121 +1,36 @@
+import 'package:closetapp/clothingdatabase.dart';
+import 'package:closetapp/clothingitem.dart';
 import 'package:flutter/material.dart';
 import 'details_page.dart';
 
 //https://github.com/kaycobad/gallery_app
 
-class ViewOutfitsPage extends StatelessWidget {
+class ViewOutfitsPage extends StatefulWidget {
+  final ClothingDatabase clothingDatabase;
+
+  ViewOutfitsPage({Key key, @required this.clothingDatabase}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Sen',
-      ),
-      home: Closet(),
-    );
-  }
+  _ViewOutfitsPageState createState() =>
+      _ViewOutfitsPageState(clothingDatabase);
 }
 
-List<ImageDetails> _images = [
-  ImageDetails(
-    imagePath: 'assets/images/1.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/2.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/3.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/4.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/5.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/6.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/7.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/8.jpg',
-    title: 'New York',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/9.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/10.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/11.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/12.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/13.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/14.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/15.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-  ImageDetails(
-    imagePath: 'assets/images/16.jpg',
-    title: 'Category',
-    details:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
-  ),
-];
+class _ViewOutfitsPageState extends State<ViewOutfitsPage> {
+  ClothingDatabase clothingDatabase;
+  List<ClothingItem> clothingItems;
 
-class Closet extends StatelessWidget {
+  _ViewOutfitsPageState(ClothingDatabase clothingDatabase) {
+    this.clothingDatabase = clothingDatabase;
+
+    initClothingItems();
+  }
+
+  void initClothingItems() async {
+    clothingDatabase.getClothingItems().then((value) => setState(() {
+          clothingItems = value;
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,42 +68,42 @@ class Closet extends StatelessWidget {
                   ),
                 ),
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  itemBuilder: (context, index) {
-                    return RawMaterialButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailsPage(
-                              imagePath: _images[index].imagePath,
-                              title: _images[index].title,
-                              details: _images[index].details,
-                              index: index,
+                    itemCount: (clothingItems ?? []).length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemBuilder: (context, index) {
+                      return RawMaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(
+                                image: clothingItems[index].image,
+                                name: clothingItems[index].name,
+                                category: clothingItems[index].category,
+                                index: index,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      child: Hero(
-                        tag: 'logo$index',
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            image: DecorationImage(
-                              image: AssetImage(_images[index].imagePath),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                          );
+                        },
+                        child: Hero(
+                          tag: 'logo$index',
+                          child: Container(
+                              child: Text(clothingItems[index].name)
+                              // decoration: BoxDecoration(
+                              //   borderRadius: BorderRadius.circular(15),
+                              //   image: DecorationImage(
+                              //     image: MemoryImage(clothingItems[index].image),
+                              //     fit: BoxFit.cover,
+                              //   ),
+                              // ),
+                              ),
                         ),
-                      ),
-                    );
-                  },
-                  itemCount: _images.length,
-                ),
+                      );
+                    }),
               ),
             )
           ],
@@ -198,13 +113,13 @@ class Closet extends StatelessWidget {
   }
 }
 
-class ImageDetails {
-  final String imagePath;
-  final String title;
-  final String details;
-  ImageDetails({
-    @required this.imagePath,
-    @required this.title,
-    @required this.details,
-  });
-}
+// class ImageDetails {
+//   final String imagePath;
+//   final String title;
+//   final String details;
+//   ImageDetails({
+//     @required this.imagePath,
+//     @required this.title,
+//     @required this.details,
+//   });
+// }
