@@ -7,6 +7,7 @@ import 'package:closetapp/clothingitem.dart';
 import 'package:closetapp/helpers.dart';
 import 'package:closetapp/screens/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CroppedImage extends StatefulWidget {
   final UI.Image image;
@@ -114,7 +115,8 @@ class DisplayImage extends CustomPainter {
   DisplayImage(this.im);
   @override
   void paint(UI.Canvas canvas, UI.Size size) {
-    canvas.drawImage(im, Offset(0, 0), Paint());
+    canvas.drawColor(Colors.blue, BlendMode.src);
+    canvas.drawImage(im, new Offset(0, 0), new Paint());
   }
 
   @override
