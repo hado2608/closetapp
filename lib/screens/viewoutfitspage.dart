@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:closetapp/clothingdatabase.dart';
 import 'package:closetapp/clothingitem.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import '../helpers.dart';
 import 'details_page.dart';
 
 //https://github.com/kaycobad/gallery_app
@@ -29,6 +33,10 @@ class _ViewOutfitsPageState extends State<ViewOutfitsPage> {
     clothingDatabase.getClothingItems().then((value) => setState(() {
           clothingItems = value;
         }));
+  }
+
+  Future<File> getClothingItemImageHelper(String itemPath) async {
+    return pathForImage(itemPath);
   }
 
   @override
@@ -76,33 +84,52 @@ class _ViewOutfitsPageState extends State<ViewOutfitsPage> {
                     ),
                     itemBuilder: (context, index) {
                       return RawMaterialButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsPage(
-                                image: clothingItems[index].image,
-                                name: clothingItems[index].name,
-                                category: clothingItems[index].category,
-                                index: index,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FutureBuilder(
+                                    future: getClothingItemImageHelper(
+                                        clothingItems[index].imagePath),
+                                    builder: (context,
+                                        AsyncSnapshot<File> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return DetailsPage(
+                                            image: snapshot.data,
+                                            name: clothingItems[index].name,
+                                            category:
+                                                clothingItems[index].category,
+                                            id: clothingItems[index].id);
+                                      } else {
+                                        return Scaffold();
+                                      }
+                                    }),
                               ),
+                            );
+                          },
+                          child: Hero(
+                            tag: 'logo$index',
+                            child: Container(
+                              child: FutureBuilder(
+                                  future: getClothingItemImageHelper(
+                                      clothingItems[index].imagePath),
+                                  builder:
+                                      (context, AsyncSnapshot<File> snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Container(
+                                          decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        image: DecorationImage(
+                                          image: FileImage(snapshot.data),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ));
+                                    } else {
+                                      return Container();
+                                    }
+                                  }),
                             ),
-                          );
-                        },
-                        child: Hero(
-                          tag: 'logo$index',
-                          child: Container(
-                              child: Text(clothingItems[index].name)
-                              // decoration: BoxDecoration(
-                              //   borderRadius: BorderRadius.circular(15),
-                              //   image: DecorationImage(
-                              //     image: MemoryImage(clothingItems[index].image),
-                              //     fit: BoxFit.cover,
-                              //   ),
-                              // ),
-                              ),
-                        ),
-                      );
+                          ));
                     }),
               ),
             )

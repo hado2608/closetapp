@@ -1,19 +1,19 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 //https://github.com/kaycobad/gallery_app
 
 class DetailsPage extends StatelessWidget {
-  final Uint8List image;
+  final File image;
   final String name;
   final String category;
-  final int index;
+  final String id;
   DetailsPage(
       {@required this.image,
       @required this.name,
       @required this.category,
-      @required this.index});
+      @required this.id});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,14 +22,14 @@ class DetailsPage extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Hero(
-                tag: 'logo$index',
+                tag: 'logo$id',
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30)),
                     image: DecorationImage(
-                      image: MemoryImage(image),
+                      image: FileImage(image),
                       fit: BoxFit.cover,
                     ),
                   ),

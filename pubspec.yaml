@@ -30,6 +30,7 @@ dependencies:
   flutter_inappwebview: ^2.0.2
   bitmap: ^0.0.6
   image: ^2.1.19
+  uuid: 2.2.2
   path_provider:
 
 

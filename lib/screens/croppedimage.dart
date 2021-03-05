@@ -1,12 +1,12 @@
+import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui' as UI;
 
 import 'package:closetapp/clothingdatabase.dart';
 import 'package:closetapp/clothingitem.dart';
+import 'package:closetapp/helpers.dart';
 import 'package:closetapp/screens/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CroppedImage extends StatefulWidget {
   final UI.Image image;
@@ -24,27 +24,29 @@ class CroppedImage extends StatefulWidget {
 class _CroppedImageState extends State<CroppedImage> {
   final _formKey = GlobalKey<FormState>();
   ClothingDatabase clothingDatabase;
-  Uint8List imageData;
   UI.Image img;
   bool isImageLoaded = false;
   String clothingName;
   String categoryName;
+  String itemPath;
 
   _CroppedImageState(UI.Image img, ClothingDatabase clothingDatabase) {
     this.img = img;
     this.clothingDatabase = clothingDatabase;
 
-    initState();
+    // initState();
   }
 
-  void initState() {
-    super.initState();
-    uiImageToUint8List();
-  }
+  // void initState() {
+  //   super.initState();
+  //   uiImageToUint8List();
+  // }
 
-  void uiImageToUint8List() async {
-    ByteData bd = await img.toByteData();
-    imageData = bd.buffer.asUint8List();
+  void createImageFile() async {
+    itemPath = generateImageName();
+    final imageFile = await pathForImage(itemPath);
+    final bytes = await img.toByteData(format: UI.ImageByteFormat.png);
+    await imageFile.writeAsBytes(bytes.buffer.asUint8List());
   }
 
   @override
@@ -83,12 +85,13 @@ class _CroppedImageState extends State<CroppedImage> {
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState.validate()) {
+                createImageFile();
                 clothingDatabase.insert(new ClothingItem(
                     id: "$clothingName" +
                         (new Random().nextInt(1000)).toString(),
                     name: clothingName,
                     category: categoryName,
-                    image: imageData));
+                    imagePath: itemPath));
                 // Scaffold.of(context)
                 //     .showSnackBar(SnackBar(content: Text('Processing Data')));
                 Navigator.push(

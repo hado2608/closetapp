@@ -1,24 +1,22 @@
-import 'dart:typed_data';
-
 class ClothingItem {
   String id;
   String name;
   String category;
-  Uint8List image;
+  String imagePath;
 
-  ClothingItem({this.id, this.name, this.category, this.image});
+  ClothingItem({this.id, this.name, this.category, this.imagePath});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
       'category': category,
-      'image': image,
+      'imagePath': imagePath,
     };
   }
 
   @override
   String toString() {
-    return 'ClothingItem{id: $id, name: $name, category: $category, image: $image}';
+    return 'ClothingItem{id: $id, name: $name, category: $category, imagePath: $imagePath}';
   }
 }

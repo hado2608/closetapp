@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:closetapp/clothingitem.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ClothingDatabase {
@@ -10,6 +13,7 @@ class ClothingDatabase {
     // Avoid errors caused by flutter upgrade.
 // Importing 'package:flutter/widgets.dart' is required.
     WidgetsFlutterBinding.ensureInitialized();
+    // deleteDatabase(join(await getDatabasesPath(), 'clothes_database.db'));
 // Open the database and store the reference.
     database = await openDatabase(
       // Set the path to the database. Note: Using the `join` function from the
@@ -20,7 +24,7 @@ class ClothingDatabase {
       onCreate: (db, version) {
         // Run the CREATE TABLE statement on the database.
         return db.execute(
-          "CREATE TABLE clothes(id TEXT PRIMARY KEY, name TEXT, category TEXT, image BLOB)",
+          "CREATE TABLE clothes(id TEXT PRIMARY KEY, name TEXT, category TEXT, imagePath TEXT)",
         );
       },
       // Set the version. This executes the onCreate function and provides a
@@ -52,7 +56,7 @@ class ClothingDatabase {
     // final List<Map<String, dynamic>> maps = await db.query('clothes');
 
     final List<Map<String, dynamic>> maps =
-        await db.rawQuery('SELECT id, name, category FROM clothes');
+        await db.rawQuery('SELECT id, name, category, imagePath FROM clothes');
 
     // Convert the List<Map<String, dynamic> into a List<ClothingItem>.
     return List.generate(maps.length, (i) {
@@ -60,9 +64,16 @@ class ClothingDatabase {
         id: maps[i]['id'],
         name: maps[i]['name'],
         category: maps[i]['category'],
-        image: maps[i]['image'],
+        imagePath: maps[i]['imagePath'],
       );
     });
+  }
+
+  Future<File> getClothingItemImage(String name, String category) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    String itemPath = '$path/$name/$category.jpg';
+    return File(itemPath);
   }
 
   Future<void> updateClothingItem(ClothingItem clothingItem) async {
@@ -80,7 +91,7 @@ class ClothingDatabase {
     );
   }
 
-  Future<void> deleteClothingItem(int id) async {
+  Future<void> deleteClothingItem() async {
     // Get a reference to the database.
     final db = database;
 
@@ -88,9 +99,8 @@ class ClothingDatabase {
     await db.delete(
       'clothes',
       // Use a `where` clause to delete a specific ClothingItem.
-      where: "id = ?",
+      where: "1",
       // Pass the ClothingItem's id as a whereArg to prevent SQL injection.
-      whereArgs: [id],
     );
   }
 }
