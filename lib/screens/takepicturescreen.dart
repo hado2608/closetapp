@@ -1,24 +1,33 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
+import 'package:closetapp/clothingdatabase.dart';
 import 'package:closetapp/screens/paintingapp.dart';
 import 'package:flutter/material.dart';
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
+  final ClothingDatabase clothingDatabase;
 
   const TakePictureScreen({
     Key key,
     @required this.camera,
+    @required this.clothingDatabase,
   }) : super(key: key);
 
   @override
-  TakePictureScreenState createState() => TakePictureScreenState();
+  _TakePictureScreenState createState() =>
+      _TakePictureScreenState(clothingDatabase);
 }
 
-class TakePictureScreenState extends State<TakePictureScreen> {
+class _TakePictureScreenState extends State<TakePictureScreen> {
   CameraController _controller;
   Future<void> _initializeControllerFuture;
+  ClothingDatabase clothingDatabase;
+
+  _TakePictureScreenState(ClothingDatabase clothingDatabase) {
+    this.clothingDatabase = clothingDatabase;
+  }
 
   @override
   void initState() {
@@ -80,7 +89,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PaintingApp(fileImage: image),
+                builder: (context) => PaintingApp(
+                    fileImage: image, clothingDatabase: clothingDatabase),
               ),
             );
           } catch (e) {

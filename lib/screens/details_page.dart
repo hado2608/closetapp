@@ -1,17 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 //https://github.com/kaycobad/gallery_app
 
 class DetailsPage extends StatelessWidget {
-  final String imagePath;
-  final String title;
-  final String details;
-  final int index;
+  final File image;
+  final String name;
+  final String category;
+  final String id;
   DetailsPage(
-      {@required this.imagePath,
-      @required this.title,
-      @required this.details,
-      @required this.index});
+      {@required this.image,
+      @required this.name,
+      @required this.category,
+      @required this.id});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,14 +22,14 @@ class DetailsPage extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Hero(
-                tag: 'logo$index',
+                tag: 'logo$id',
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30)),
                     image: DecorationImage(
-                      image: AssetImage(imagePath),
+                      image: FileImage(image),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -46,7 +48,7 @@ class DetailsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          title,
+                          name,
                           style: TextStyle(
                             color: Colors.lightBlueAccent,
                             fontSize: 22,
@@ -57,7 +59,7 @@ class DetailsPage extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          details,
+                          category,
                           style: TextStyle(
                             fontSize: 14,
                           ),
