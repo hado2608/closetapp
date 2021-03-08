@@ -69,6 +69,26 @@ class ClothingDatabase {
     });
   }
 
+  // A method that retrieves all the ClothingItems of a given category from the ClothingItems table.
+  Future<List<ClothingItem>> getClothingCategoryItems(String category) async {
+    // Get a reference to the database.
+    final Database db = database;
+
+    // Query the table for all The ClothingItems of the given category.
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+        'SELECT id, name, category, imagePath FROM clothes GROUP BY id HAVING $category');
+
+    // Convert the List<Map<String, dynamic> into a List<ClothingItem>.
+    return List.generate(maps.length, (i) {
+      return ClothingItem(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+        category: maps[i]['category'],
+        imagePath: maps[i]['imagePath'],
+      );
+    });
+  }
+
   Future<File> getClothingItemImage(String name, String category) async {
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
