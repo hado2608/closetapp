@@ -52,7 +52,8 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CombineClothesPage()),
+                  MaterialPageRoute(builder: (context) =>
+                      CombineClothesPage(clothingDatabase: clothingDatabase)),
                 );
               },
               child: Text('Make a New Outfit')),
