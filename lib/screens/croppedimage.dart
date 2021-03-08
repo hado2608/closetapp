@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as UI;
 
@@ -7,7 +6,6 @@ import 'package:closetapp/clothingitem.dart';
 import 'package:closetapp/helpers.dart';
 import 'package:closetapp/screens/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CroppedImage extends StatefulWidget {
   final UI.Image image;
@@ -28,7 +26,7 @@ class _CroppedImageState extends State<CroppedImage> {
   UI.Image img;
   bool isImageLoaded = false;
   String clothingName;
-  String categoryName;
+  String categoryName = 'Shirt';
   String itemPath;
 
   _CroppedImageState(UI.Image img, ClothingDatabase clothingDatabase) {
@@ -61,28 +59,40 @@ class _CroppedImageState extends State<CroppedImage> {
               key: _formKey,
               child: Column(children: <Widget>[
                 TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please name your clothing item.';
-                    } else {
-                      clothingName = value;
-                      return null;
-                    }
-                  },
-                ),
-                TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please categorize your clothing item.';
-                    } else {
-                      categoryName = value;
-                      return null;
-                    }
-                  },
-                  decoration: InputDecoration(labelText: 'Category Name'),
-                ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please name your clothing item.';
+                      } else {
+                        clothingName = value;
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Clothing Name',
+                    )),
+                DropdownButton(
+                    value: categoryName,
+                    items: [
+                      DropdownMenuItem(
+                        child: Text('Shirt'),
+                        value: 'Shirt',
+                      ),
+                      DropdownMenuItem(
+                        child: Text('Bottoms'),
+                        value: 'Bottoms',
+                      ),
+                      DropdownMenuItem(child: Text('Shoes'), value: 'Shoes')
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        categoryName = value;
+                      });
+                    }),
               ])),
-          CustomPaint(painter: DisplayImage(img), child: Container()),
+          CustomPaint(
+            painter: DisplayImage(img),
+            child: Container(),
+          ),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState.validate()) {
@@ -115,7 +125,7 @@ class DisplayImage extends CustomPainter {
   DisplayImage(this.im);
   @override
   void paint(UI.Canvas canvas, UI.Size size) {
-    canvas.drawColor(Colors.white, BlendMode.src);
+    // canvas.drawColor(Colors.blue[100], BlendMode.src);
     canvas.drawImage(im, new Offset(0, 0), new Paint());
   }
 
