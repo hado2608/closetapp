@@ -1,13 +1,12 @@
 import 'dart:math';
 
+import 'package:closetapp/clothingitem.dart';
 import 'package:closetapp/screens/dynamicList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../clothingdatabase.dart';
-
-
 
 class ClothingList extends StatefulWidget {
   final ClothingDatabase clothingDatabase;
@@ -18,52 +17,42 @@ class ClothingList extends StatefulWidget {
 }
 
 class _ClothingListState extends State<ClothingList> {
-
   ClothingDatabase clothingDatabase;
   _ClothingListState(ClothingDatabase clothingDatabase) {
     this.clothingDatabase = clothingDatabase;
   }
 
-  List<int> data = [];
-  int _focusedIndex = 0;
-  int n = 30;
+  List<ClothingItem> shirts;
+  List<ClothingItem> bottoms;
+  List<ClothingItem> shoes;
 
   @override
   void initState() {
     super.initState();
-
-    for (int i = 0; i < n; i++) {
-      data.add(Random().nextInt(100) + 1);
-    }
+    initClothingItemList();
   }
 
-  void _onItemFocus(int index) {
-    setState(() {
-      _focusedIndex = index;
-    });
+  void initClothingItemList() async {
+    shirts = await clothingDatabase.getClothingCategoryItems("Shirt");
+    bottoms = await clothingDatabase.getClothingCategoryItems("Bottoms");
+    shoes = await clothingDatabase.getClothingCategoryItems("Shoes");
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(
-            children: [
-              Flexible(
-                child: DynamicList(),
-              ),
-              Flexible(
-                child: DynamicList(),
-              ),
-              Flexible(
-                child: DynamicList(),
-              ),
-            ]
+        child: Column(children: [
+          Flexible(
+            child: DynamicList(clothingItemList: shirts),
           ),
-        ),
+          Flexible(
+            child: DynamicList(clothingItemList: bottoms),
+          ),
+          Flexible(
+            child: DynamicList(clothingItemList: shoes),
+          ),
+        ]),
+      ),
     );
   }
-
 }
-
-
-
