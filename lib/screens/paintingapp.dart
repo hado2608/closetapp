@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'dart:ui' as UI;
 
 import 'package:camera/camera.dart';
+import 'package:closetapp/clothingdatabase.dart';
 import 'package:closetapp/screens/croppedimage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -16,17 +17,21 @@ final pathOffsets = <Offset>[];
 
 class PaintingApp extends StatefulWidget {
   final XFile fileImage;
+  final ClothingDatabase clothingDatabase;
 
   const PaintingApp({
     Key key,
     @required this.fileImage,
+    @required this.clothingDatabase,
   }) : super(key: key);
 
   @override
-  _PaintingAppState createState() => _PaintingAppState(fileImage);
+  _PaintingAppState createState() =>
+      _PaintingAppState(fileImage, clothingDatabase);
 }
 
 class _PaintingAppState extends State<PaintingApp> {
+  ClothingDatabase clothingDatabase;
   XFile fileImage;
   UI.Image image;
   bool isImageLoaded = false;
@@ -38,8 +43,9 @@ class _PaintingAppState extends State<PaintingApp> {
     ..isAntiAlias = true
     ..style = PaintingStyle.fill;
 
-  _PaintingAppState(XFile fi) {
+  _PaintingAppState(XFile fi, ClothingDatabase clothingDatabase) {
     this.fileImage = fi;
+    this.clothingDatabase = clothingDatabase;
   }
 
   void initState() {
@@ -85,8 +91,11 @@ class _PaintingAppState extends State<PaintingApp> {
   }
 
   runCrop() {
-    cropSelection().then((value) => Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CroppedImage(image: value))));
+    cropSelection().then((value) => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CroppedImage(
+                image: value, clothingDatabase: clothingDatabase))));
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:closetapp/clothingdatabase.dart';
 import 'package:flutter/material.dart';
 
 import 'package:closetapp/screens/viewoutfitspage.dart';
@@ -19,10 +20,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<CameraDescription> cameras;
   CameraDescription firstCamera;
+  final ClothingDatabase clothingDatabase = new ClothingDatabase();
 
   void initState() {
     super.initState();
     cameraInit();
+    clothingDatabase.startDatabase();
   }
 
   void cameraInit() async {
@@ -35,50 +38,39 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ListView(
-          children: <Widget>[
-            new Image.asset(
-              'assets/images/logotitle.png',
-              width: 400,
-              height: 400,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
+          child: Column(
+        children: [
+          ElevatedButton(
+            child: Text('View Outfits'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ViewOutfitsPage(clothingDatabase: clothingDatabase)),
+              );
+            },
+          ),
+          ElevatedButton(
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ViewOutfitsPage()));
               },
-              child: Text('View Outfits',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CombineClothesPage()),
-                  );
-                },
-                child: Text('Make a New Outfit',
-                    style: TextStyle(fontWeight: FontWeight.bold))),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            TakePictureScreen(camera: firstCamera)),
-                  );
-                },
-                child: Text(
-                  'Add Clothes to Closet',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-          ],
-        ),
-      ),
+              child: Text('Make a New Outfit')),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TakePictureScreen(
+                            camera: firstCamera,
+                            clothingDatabase: clothingDatabase,
+                          )),
+                );
+              },
+              child: Text('Add Clothes to Closet')),
+        ],
+      )),
     );
   }
 }
