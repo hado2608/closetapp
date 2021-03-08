@@ -6,7 +6,6 @@ import 'package:closetapp/screens/viewoutfitspage.dart';
 import 'package:closetapp/screens/combineclothespage.dart';
 import 'package:closetapp/screens/takepicturescreen.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
@@ -38,10 +37,19 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(
+          child: ListView(
         children: [
+          new Image.asset(
+            'assets/images/logotitle.png',
+            width: 400,
+            height: 400,
+          ),
           ElevatedButton(
-            child: Text('View Outfits'),
+            style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
+            child: Text(
+              'View Outfits',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -52,12 +60,15 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ViewOutfitsPage()));
               },
-              child: Text('Make a New Outfit')),
+              child: Text('Make a New Outfit',
+                  style: TextStyle(fontWeight: FontWeight.bold))),
           ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -68,7 +79,8 @@ class _HomePageState extends State<HomePage> {
                           )),
                 );
               },
-              child: Text('Add Clothes to Closet')),
+              child: Text('Add Clothes to Closet',
+                  style: TextStyle(fontWeight: FontWeight.bold))),
         ],
       )),
     );
