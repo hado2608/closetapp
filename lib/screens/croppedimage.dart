@@ -53,6 +53,7 @@ class _CroppedImageState extends State<CroppedImage> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Your Cropped Item"),
+          backgroundColor: Color(0xff716969),
         ),
         body: Column(children: <Widget>[
           Form(
@@ -94,6 +95,7 @@ class _CroppedImageState extends State<CroppedImage> {
             child: Container(),
           ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 createImageFile();
@@ -125,7 +127,7 @@ class DisplayImage extends CustomPainter {
   DisplayImage(this.im);
   @override
   void paint(UI.Canvas canvas, UI.Size size) {
-    // canvas.drawColor(Colors.blue[100], BlendMode.src);
+    canvas.drawColor(Color(0xffBCABAE), BlendMode.src);
     canvas.drawImage(im, new Offset(0, 0), new Paint());
   }
 
