@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'categoryscreen.dart';
 import 'package:flutter/material.dart';
 
 //https://github.com/kaycobad/gallery_app
@@ -111,61 +111,5 @@ class DetailsPage extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class CategoryScreen extends StatefulWidget {
-  @override
-  _CategoryScreenState createState() => _CategoryScreenState();
-}
-
-class _CategoryScreenState extends State<CategoryScreen> {
-  int _value = 1;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Edit'),
-        ),
-        body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Title',
-                        hintText: 'Give the clothes a name')),
-                new DropdownButton(
-                    value: _value,
-                    items: [
-                      DropdownMenuItem(
-                        child: Text("Shirts"),
-                        value: 1,
-                      ),
-                      DropdownMenuItem(
-                        child: Text("Pants"),
-                        value: 2,
-                      ),
-                      DropdownMenuItem(child: Text("Accessories"), value: 3),
-                      DropdownMenuItem(child: Text("Other"), value: 4)
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        _value = value;
-                      });
-                    }),
-                SizedBox(
-                  height: 20,
-                ),
-                RaisedButton(
-                  onPressed: () {},
-                  color: Colors.blue,
-                  child: Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            )));
   }
 }

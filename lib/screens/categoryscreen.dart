@@ -1,28 +1,23 @@
-import 'dart:io';
-import 'dart:math';
-import 'dart:ui' as UI;
-
-import 'package:closetapp/clothingdatabase.dart';
-import 'package:closetapp/clothingitem.dart';
-import 'package:closetapp/helpers.dart';
-import 'package:closetapp/screens/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'dart:io';
+import 'package:closetapp/clothingdatabase.dart';
+import 'dart:ui' as UI;
+import 'package:closetapp/clothingitem.dart';
+import 'dart:math';
+import 'homepage.dart';
+import 'package:closetapp/helpers.dart';
 
-class CroppedImage extends StatefulWidget {
-  final UI.Image image;
-  final ClothingDatabase clothingDatabase;
-
-  const CroppedImage(
-      {Key key, @required this.image, @required this.clothingDatabase})
-      : super(key: key);
-
+class CategoryScreen extends StatefulWidget {
   @override
-  _CroppedImageState createState() =>
-      _CroppedImageState(image, clothingDatabase);
+  // ignore: missing_required_param
+  _CategoryScreenState createState() => _CategoryScreenState();
 }
 
-class _CroppedImageState extends State<CroppedImage> {
+class _CategoryScreenState extends State<CategoryScreen> {
+  final File image;
+  final String name;
+  final String category;
+  final String id;
   final _formKey = GlobalKey<FormState>();
   ClothingDatabase clothingDatabase;
   UI.Image img;
@@ -30,19 +25,61 @@ class _CroppedImageState extends State<CroppedImage> {
   String clothingName;
   String categoryName;
   String itemPath;
+  _CategoryScreenState(
+      {@required this.image,
+      @required this.name,
+      @required this.category,
+      @required this.id});
 
-  _CroppedImageState(UI.Image img, ClothingDatabase clothingDatabase) {
-    this.img = img;
-    this.clothingDatabase = clothingDatabase;
-
-    // initState();
-  }
-
-  // void initState() {
-  //   super.initState();
-  //   uiImageToUint8List();
-  // }
-
+//   int _value = 1;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           title: Text('Edit'),
+//         ),
+//         body: Padding(
+//             padding: const EdgeInsets.all(16.0),
+//             child: Column(
+//               children: <Widget>[
+//                 TextField(
+//                     decoration: InputDecoration(
+//                         labelText: 'Title',
+//                         hintText: 'Give the clothes a name')),
+//                 new DropdownButton(
+//                     value: _value,
+//                     items: [
+//                       DropdownMenuItem(
+//                         child: Text("Shirts"),
+//                         value: 1,
+//                       ),
+//                       DropdownMenuItem(
+//                         child: Text("Pants"),
+//                         value: 2,
+//                       ),
+//                       DropdownMenuItem(child: Text("Accessories"), value: 3),
+//                       DropdownMenuItem(child: Text("Other"), value: 4)
+//                     ],
+//                     onChanged: (value) {
+//                       setState(() {
+//                         _value = value;
+//                       });
+//                     }),
+//                 SizedBox(
+//                   height: 20,
+//                 ),
+//                 RaisedButton(
+//                   onPressed: () {},
+//                   color: Colors.blue,
+//                   child: Text(
+//                     'Save',
+//                     style: TextStyle(color: Colors.white),
+//                   ),
+//                 ),
+//               ],
+//             )));
+//   }
+// }
   void createImageFile() async {
     itemPath = generateImageName();
     final imageFile = await pathForImage(itemPath);
