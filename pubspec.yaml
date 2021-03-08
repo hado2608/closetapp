@@ -32,6 +32,7 @@ dependencies:
   image: ^2.1.19
   uuid: 2.2.2
   path_provider:
+  scroll_snap_list: ^0.6.0
 
 
   # The following adds the Cupertino Icons font to your application.
