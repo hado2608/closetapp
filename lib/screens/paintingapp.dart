@@ -6,6 +6,7 @@ import 'dart:ui' as UI;
 import 'package:camera/camera.dart';
 import 'package:closetapp/screens/croppedimage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 const int dashWidth = 4;
 const int dashSpace = 4;
@@ -92,45 +93,50 @@ class _PaintingAppState extends State<PaintingApp> {
   Widget build(BuildContext context) {
     if (this.isImageLoaded) {
       return Scaffold(
-        body: GestureDetector(
-          onPanStart: (details) {
-            final renderBox = context.findRenderObject() as RenderBox;
-            final localPosition =
-                renderBox.globalToLocal(details.globalPosition);
-            setState(() {
-              pathInProgress = Path()
-                ..moveTo(localPosition.dx, localPosition.dy);
-              pathsToPaint.add(pathInProgress);
-            });
-          },
-          onPanUpdate: (details) {
-            final renderBox = context.findRenderObject() as RenderBox;
-            final localPosition =
-                renderBox.globalToLocal(details.globalPosition);
-            setState(() {
-              pathInProgress.lineTo(localPosition.dx, localPosition.dy);
-            });
-          },
-          onPanEnd: (details) {
-            setState(() {
-              pathInProgress.close();
-              cropArea =
-                  Path.combine(PathOperation.union, pathInProgress, cropArea);
-              pathsToPaint.clear();
-              pathsToPaint.add(cropArea);
-            });
-          },
-          child: Center(
-            child: CustomPaint(
-              painter: CropMarkPainter(pathsToPaint, image),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-              ),
-            ),
-          ),
+        appBar: AppBar(
+          title: Text("Crop Your Item Here"),
+          backgroundColor: Color(0xff716969),
         ),
+        body: Center(
+            child: Builder(
+                builder: (context) => GestureDetector(
+                    onPanStart: (details) {
+                      final renderBox = context.findRenderObject() as RenderBox;
+                      final localPosition =
+                          renderBox.globalToLocal(details.globalPosition);
+                      setState(() {
+                        pathInProgress = Path()
+                          ..moveTo(localPosition.dx, localPosition.dy);
+                        pathsToPaint.add(pathInProgress);
+                      });
+                    },
+                    onPanUpdate: (details) {
+                      final renderBox = context.findRenderObject() as RenderBox;
+                      final localPosition =
+                          renderBox.globalToLocal(details.globalPosition);
+                      setState(() {
+                        pathInProgress.lineTo(
+                            localPosition.dx, localPosition.dy);
+                      });
+                    },
+                    onPanEnd: (details) {
+                      setState(() {
+                        pathInProgress.close();
+                        cropArea = Path.combine(
+                            PathOperation.union, pathInProgress, cropArea);
+                        pathsToPaint.clear();
+                        pathsToPaint.add(cropArea);
+                      });
+                    },
+                    child: CustomPaint(
+                      painter: CropMarkPainter(pathsToPaint, image),
+                      child: Container(
+                        width: image.width.toDouble(),
+                        height: image.height.toDouble(),
+                      ),
+                    )))),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(0xff716969),
           child: Icon(Icons.check),
           onPressed: () {
             runCrop();
@@ -159,7 +165,7 @@ class CropMarkPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawImage(im, new Offset(0, 0), new Paint());
+    canvas.drawImage(im, Offset.zero, new Paint());
 
     for (var path in cropPaths) {
       canvas.drawPath(path, brush);

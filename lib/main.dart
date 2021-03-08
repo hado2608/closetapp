@@ -8,6 +8,8 @@ import 'package:closetapp/screens/homepage.dart';
 void main() {
   runApp(MaterialApp(
     title: 'Navigation Basics',
+    theme: ThemeData(
+        scaffoldBackgroundColor: Color(0xffBCABAE), fontFamily: 'Jura'),
     home: HomePage(),
   ));
 }
