@@ -76,7 +76,7 @@ class ClothingDatabase {
 
     // Query the table for all The ClothingItems of the given category.
     final List<Map<String, dynamic>> maps = await db.rawQuery(
-        'SELECT id, name, category, imagePath FROM clothes GROUP BY id HAVING $category');
+        "SELECT id, name, category, imagePath FROM clothes GROUP BY category, id HAVING category = ('$category')");
 
     // Convert the List<Map<String, dynamic> into a List<ClothingItem>.
     return List.generate(maps.length, (i) {

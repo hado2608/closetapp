@@ -1,32 +1,31 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:closetapp/clothingitem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../helpers.dart';
 
-class DynamicList extends StatefulWidget {
-  final List<ClothingItem> clothingItemList;
+class CategorySwipe extends StatefulWidget {
+  final List<File> clothingItemList;
 
-  const DynamicList({
+  const CategorySwipe({
     Key key,
     @required this.clothingItemList,
   }) : super(key: key);
 
   @override
-  _DynamicListState createState() => _DynamicListState(clothingItemList);
+  _CategorySwipeState createState() => _CategorySwipeState(clothingItemList);
 }
 
-class _DynamicListState extends State<DynamicList> {
-  List<ClothingItem> clothingItemList;
+class _CategorySwipeState extends State<CategorySwipe> {
+  List<File> clothingItemList;
   List<int> data = [];
   int _focusedIndex = 0;
   int n = 30;
 
-  _DynamicListState(List<ClothingItem> clothingItemList) {
+  _CategorySwipeState(List<File> clothingItemList) {
     this.clothingItemList = clothingItemList;
   }
 
@@ -78,16 +77,7 @@ class _DynamicListState extends State<DynamicList> {
               width: _itemWidth(context),
               height: _itemHeight(context),
               color: Colors.lightBlueAccent,
-              child: FutureBuilder(
-                  future: getClothingItemImageHelper(
-                      clothingItemList[index].imagePath),
-                  builder: (context, AsyncSnapshot<File> snapshot) {
-                    if (snapshot.hasData) {
-                      return Image.file(snapshot.data);
-                    } else {
-                      return Scaffold();
-                    }
-                  }),
+              child: Image.file(clothingItemList[index]),
             ),
           ),
         ],
@@ -116,7 +106,7 @@ class _DynamicListState extends State<DynamicList> {
               onItemFocus: _onItemFocus,
               itemSize: _itemWidth(context),
               itemBuilder: _buildListItem,
-              itemCount: data.length,
+              itemCount: clothingItemList.length,
               dynamicItemOpacity: 0.3,
               dynamicItemSize: true,
               // dynamicSizeEquation: customEquation, //optional
