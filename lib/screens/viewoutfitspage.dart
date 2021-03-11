@@ -42,7 +42,7 @@ class _ViewOutfitsPageState extends State<ViewOutfitsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: Color(0xffBCABAE),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -54,7 +54,7 @@ class _ViewOutfitsPageState extends State<ViewOutfitsPage> {
               'Closet',
               style: TextStyle(
                 fontSize: 25,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w800,
                 color: Colors.white,
               ),
               textAlign: TextAlign.center,

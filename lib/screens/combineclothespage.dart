@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:closetapp/screens/categoryswipe.dart';
 import 'package:closetapp/screens/viewoutfitspage.dart';
 import 'package:flutter/material.dart';
 import 'package:closetapp/screens/clothingList.dart';
@@ -16,6 +19,9 @@ class CombineClothesPage extends StatefulWidget {
 }
 
 class _CombineClothesPageState extends State<CombineClothesPage> {
+  File shirt;
+  File bottom;
+  File shoes;
   ClothingDatabase clothingDatabase;
   _CombineClothesPageState(ClothingDatabase clothingDatabase) {
     this.clothingDatabase = clothingDatabase;
@@ -26,19 +32,33 @@ class _CombineClothesPageState extends State<CombineClothesPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text('What outfit are you creating?'),
+          backgroundColor: Color(0xff716969),
         ),
         body: Stack(children: [
-          ClothingList(clothingDatabase: clothingDatabase),
-          FloatingActionButton(
-            // style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DisplayOutfit()),
-              );
+          ClothingList(
+            clothingDatabase: clothingDatabase,
+            onOutfitChanged: (shirt, bottoms, shoes) {
+              shirt = shirt;
+              bottom = bottom;
+              shoes = shoes;
             },
-            child: Text('Save'),
-          )
+          ),
+          Container(
+              alignment: Alignment.bottomRight,
+              padding: EdgeInsets.all(20),
+              child: FloatingActionButton(
+                backgroundColor: Color(0xff716969),
+                // style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DisplayOutfit(imageList: [shirt, bottom, shoes])),
+                  );
+                },
+                child: Text('Save'),
+              ))
         ]));
   }
 }

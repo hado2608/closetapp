@@ -50,7 +50,7 @@ class DetailsPage extends StatelessWidget {
                         Text(
                           name,
                           style: TextStyle(
-                            color: Colors.lightBlueAccent,
+                            color: Colors.black,
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                           ),
@@ -75,7 +75,7 @@ class DetailsPage extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           padding: EdgeInsets.symmetric(vertical: 15),
-                          color: Colors.lightBlueAccent,
+                          color: Color(0xff716969),
                           child: Text(
                             'Back',
                             style: TextStyle(
@@ -91,7 +91,7 @@ class DetailsPage extends StatelessWidget {
                         child: FlatButton(
                           onPressed: () {},
                           padding: EdgeInsets.symmetric(vertical: 15),
-                          color: Colors.lightBlueAccent,
+                          color: Color(0xff716969),
                           child: Text(
                             'Edit',
                             style: TextStyle(
