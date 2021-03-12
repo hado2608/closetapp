@@ -6,27 +6,34 @@ import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../helpers.dart';
+import 'displayoutfit.dart';
 
 class CategorySwipe extends StatefulWidget {
   final List<File> clothingItemList;
+  final void Function(File) onItemSelected;
 
-  const CategorySwipe({
-    Key key,
-    @required this.clothingItemList,
-  }) : super(key: key);
+  const CategorySwipe(
+      {Key key, @required this.clothingItemList, this.onItemSelected})
+      : super(key: key);
 
   @override
-  _CategorySwipeState createState() => _CategorySwipeState(clothingItemList);
+  _CategorySwipeState createState() =>
+      _CategorySwipeState(clothingItemList, onItemSelected);
 }
 
 class _CategorySwipeState extends State<CategorySwipe> {
   List<File> clothingItemList;
   List<int> data = [];
+  List<File> highlightedItems = [];
+  void Function(File) onItemSelected;
   int _focusedIndex = 0;
   int n = 30;
 
-  _CategorySwipeState(List<File> clothingItemList) {
+  _CategorySwipeState(
+      List<File> clothingItemList, void Function(File) onItemSelected) {
     this.clothingItemList = clothingItemList;
+    this.onItemSelected = onItemSelected;
+    _doItemSelectedCallback();
   }
 
   Future<File> getClothingItemImageHelper(String itemPath) async {
@@ -45,7 +52,14 @@ class _CategorySwipeState extends State<CategorySwipe> {
   void _onItemFocus(int index) {
     setState(() {
       _focusedIndex = index;
+      _doItemSelectedCallback();
     });
+  }
+
+  void _doItemSelectedCallback() {
+    if (onItemSelected != null) {
+      onItemSelected(clothingItemList[_focusedIndex]);
+    }
   }
 
   Widget _buildItemDetail() {
@@ -76,7 +90,7 @@ class _CategorySwipeState extends State<CategorySwipe> {
             child: Container(
               width: _itemWidth(context),
               height: _itemHeight(context),
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
               child: Image.file(clothingItemList[index]),
             ),
           ),

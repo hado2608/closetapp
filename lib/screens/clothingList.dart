@@ -10,20 +10,32 @@ import '../clothingdatabase.dart';
 
 class ClothingList extends StatefulWidget {
   final ClothingDatabase clothingDatabase;
-  ClothingList({Key key, @required this.clothingDatabase}) : super(key: key);
+  final void Function(File, File, File) onOutfitChanged;
+  ClothingList(
+      {Key key,
+      @required this.clothingDatabase,
+      @required this.onOutfitChanged})
+      : super(key: key);
 
   @override
-  _ClothingListState createState() => _ClothingListState(clothingDatabase);
+  _ClothingListState createState() =>
+      _ClothingListState(clothingDatabase, onOutfitChanged);
 }
 
 class _ClothingListState extends State<ClothingList> {
   List<ClothingItem> shirts = [];
   List<ClothingItem> bottoms = [];
   List<ClothingItem> shoes = [];
+  File selectedShirt;
+  File selectedBottoms;
+  File selectedShoes;
+  void Function(File, File, File) onOutfitChanged;
 
   ClothingDatabase clothingDatabase;
-  _ClothingListState(ClothingDatabase clothingDatabase) {
+  _ClothingListState(ClothingDatabase clothingDatabase,
+      void Function(File, File, File) onOutfitChanged) {
     this.clothingDatabase = clothingDatabase;
+    this.onOutfitChanged = onOutfitChanged;
   }
 
   @override
@@ -62,6 +74,12 @@ class _ClothingListState extends State<ClothingList> {
     // return Future.wait(c.map((i) => pathForImage(i.imagePath)));
   }
 
+  void _doOutfitChangeCallback() {
+    if (onOutfitChanged != null) {
+      onOutfitChanged(selectedShirt, selectedBottoms, selectedShoes);
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
@@ -71,7 +89,12 @@ class _ClothingListState extends State<ClothingList> {
           builder: (context, AsyncSnapshot<List<File>> snapshot) {
             if (snapshot.hasData) {
               return Flexible(
-                child: CategorySwipe(clothingItemList: snapshot.data),
+                child: CategorySwipe(
+                    clothingItemList: snapshot.data,
+                    onItemSelected: (file) {
+                      selectedShirt = file;
+                      _doOutfitChangeCallback();
+                    }),
               );
             } else {
               return Container();
@@ -82,7 +105,12 @@ class _ClothingListState extends State<ClothingList> {
           builder: (context, AsyncSnapshot<List<File>> snapshot) {
             if (snapshot.hasData) {
               return Flexible(
-                child: CategorySwipe(clothingItemList: snapshot.data),
+                child: CategorySwipe(
+                    clothingItemList: snapshot.data,
+                    onItemSelected: (file) {
+                      selectedBottoms = file;
+                      _doOutfitChangeCallback();
+                    }),
               );
             } else {
               return Container();
@@ -93,7 +121,12 @@ class _ClothingListState extends State<ClothingList> {
           builder: (context, AsyncSnapshot<List<File>> snapshot) {
             if (snapshot.hasData) {
               return Flexible(
-                child: CategorySwipe(clothingItemList: snapshot.data),
+                child: CategorySwipe(
+                    clothingItemList: snapshot.data,
+                    onItemSelected: (file) {
+                      selectedShoes = file;
+                      _doOutfitChangeCallback();
+                    }),
               );
             } else {
               return Container();
