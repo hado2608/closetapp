@@ -37,19 +37,16 @@ class _ClothingListState extends State<ClothingList> {
         .getClothingCategoryItems("Shirt")
         .then((value) => setState(() {
               shirts = value;
-              print(shirts);
             }));
     clothingDatabase
         .getClothingCategoryItems("Bottoms")
         .then((value) => setState(() {
               bottoms = value;
-              print(bottoms);
             }));
     clothingDatabase
         .getClothingCategoryItems("Shoes")
         .then((value) => setState(() {
               shoes = value;
-              print(shoes);
             }));
   }
 
@@ -58,10 +55,11 @@ class _ClothingListState extends State<ClothingList> {
     for (ClothingItem i in c) {
       a.add(await pathForImage(i.imagePath));
     }
-    //NEVER DELETE THIS
-    print(a[0]);
-
+    //deleting a[0] results in the categorySwipe objects not appearing
+    a[0];
     return a;
+
+    // return Future.wait(c.map((i) => pathForImage(i.imagePath)));
   }
 
   Widget build(BuildContext context) {
