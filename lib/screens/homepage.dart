@@ -62,16 +62,12 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
               style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
               onPressed: () {
-
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>
-                      CombineClothesPage(clothingDatabase: clothingDatabase)),
+                  MaterialPageRoute(
+                      builder: (context) => CombineClothesPage(
+                          clothingDatabase: clothingDatabase)),
                 );
-
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ViewOutfitsPage()));
-
               },
               child: Text('Make a New Outfit',
                   style: TextStyle(fontWeight: FontWeight.bold))),
