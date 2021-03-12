@@ -50,7 +50,6 @@ class DetailsPage extends StatelessWidget {
                         Text(
                           name,
                           style: TextStyle(
-                            color: Colors.lightBlueAccent,
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                           ),
@@ -75,7 +74,6 @@ class DetailsPage extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           padding: EdgeInsets.symmetric(vertical: 15),
-                          color: Colors.lightBlueAccent,
                           child: Text(
                             'Back',
                             style: TextStyle(
@@ -93,7 +91,6 @@ class DetailsPage extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => CategoryScreen())),
                           padding: EdgeInsets.symmetric(vertical: 15),
-                          color: Colors.lightBlueAccent,
                           child: Text(
                             'Edit',
                             style: TextStyle(
