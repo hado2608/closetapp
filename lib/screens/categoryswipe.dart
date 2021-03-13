@@ -27,7 +27,6 @@ class _CategorySwipeState extends State<CategorySwipe> {
   List<File> highlightedItems = [];
   void Function(File) onItemSelected;
   int _focusedIndex = 0;
-  int n = 30;
 
   _CategorySwipeState(
       List<File> clothingItemList, void Function(File) onItemSelected) {
@@ -43,10 +42,6 @@ class _CategorySwipeState extends State<CategorySwipe> {
   @override
   void initState() {
     super.initState();
-
-    for (int i = 0; i < n; i++) {
-      data.add(Random().nextInt(100) + 1);
-    }
   }
 
   void _onItemFocus(int index) {
@@ -63,20 +58,12 @@ class _CategorySwipeState extends State<CategorySwipe> {
   }
 
   Widget _buildItemDetail() {
-    if (data.length > _focusedIndex)
       return Flexible(
         child: Container(
           height: MediaQuery.of(context).size.height / 4,
-          child: Text("index $_focusedIndex: ${data[_focusedIndex]}"),
+          // child: Text("index $_focusedIndex"),
         ),
       );
-
-    return Flexible(
-      child: Container(
-        height: MediaQuery.of(context).size.height / 4,
-        child: Text("No Data"),
-      ),
-    );
   }
 
   Widget _buildListItem(BuildContext context, int index) {
@@ -105,14 +92,13 @@ class _CategorySwipeState extends State<CategorySwipe> {
   double _itemWidth(BuildContext context) =>
       MediaQuery.of(context).size.width / 5;
 
+
+  /// Creates a dynamic list of clothing items.
+  /// Adapted from https://pub.dev/packages/scroll_snap_list
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      // title: 'Horizontal List Demo',
-      // home: Scaffold(
-      //   appBar: AppBar(
-      //     title: Text("Horizontal List"),
-      //   ),
       child: Column(
         children: <Widget>[
           Expanded(
@@ -123,7 +109,6 @@ class _CategorySwipeState extends State<CategorySwipe> {
               itemCount: clothingItemList.length,
               dynamicItemOpacity: 0.3,
               dynamicItemSize: true,
-              // dynamicSizeEquation: customEquation, //optional
             ),
           ),
           _buildItemDetail(),

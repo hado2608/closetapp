@@ -67,6 +67,7 @@ class _ClothingListState extends State<ClothingList> {
       a.add(await pathForImage(i.imagePath));
     }
     //deleting a[0] results in the categorySwipe objects not appearing
+    // ignore: unnecessary_statements
     a[0];
     return a;
 
@@ -78,6 +79,8 @@ class _ClothingListState extends State<ClothingList> {
       onOutfitChanged(selectedShirt, selectedBottoms, selectedShoes);
     }
   }
+
+  /// Stacks the 3 categoryswipe items (lists) on the screen
 
   Widget build(BuildContext context) {
     return Scaffold(
