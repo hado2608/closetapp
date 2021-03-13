@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:closetapp/clothingdatabase.dart';
 import 'package:closetapp/clothingitem.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import '../helpers.dart';
 import 'details_page.dart';
 
@@ -141,14 +140,3 @@ class _ViewOutfitsPageState extends State<ViewClothingItemsPage> {
     );
   }
 }
-
-// class ImageDetails {
-//   final String imagePath;
-//   final String title;
-//   final String details;
-//   ImageDetails({
-//     @required this.imagePath,
-//     @required this.title,
-//     @required this.details,
-//   });
-// }

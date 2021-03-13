@@ -5,7 +5,7 @@ import 'dart:ui' as UI;
 
 import 'package:camera/camera.dart';
 import 'package:closetapp/clothingdatabase.dart';
-import 'package:closetapp/screens/croppedimage.dart';
+import 'package:closetapp/screens/clothingitemsave.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -58,6 +58,10 @@ class _PaintingAppState extends State<PaintingApp> {
     image = await getImage(data);
   }
 
+  /**
+   * Turns typed data into a UI image
+   * Adapted from https://stackoverflow.com/questions/59923245/flutter-convert-and-resize-asset-image-to-dart-ui-image
+   */
   Future<UI.Image> getImage(Uint8List img) {
     final Completer<UI.Image> completer = Completer();
     UI.decodeImageFromList(img, (UI.Image img) {
@@ -94,7 +98,7 @@ class _PaintingAppState extends State<PaintingApp> {
     cropSelection().then((value) => Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => CroppedImage(
+            builder: (context) => ClothingItemSave(
                 image: value, clothingDatabase: clothingDatabase))));
   }
 

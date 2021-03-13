@@ -7,20 +7,24 @@ import 'package:closetapp/helpers.dart';
 import 'package:closetapp/screens/homepage.dart';
 import 'package:flutter/material.dart';
 
-class CroppedImage extends StatefulWidget {
+/**
+ * Represents the screen allowing the user to save the clothingItem 
+ * in the database.
+ */
+class ClothingItemSave extends StatefulWidget {
   final UI.Image image;
   final ClothingDatabase clothingDatabase;
 
-  const CroppedImage(
+  const ClothingItemSave(
       {Key key, @required this.image, @required this.clothingDatabase})
       : super(key: key);
 
   @override
-  _CroppedImageState createState() =>
-      _CroppedImageState(image, clothingDatabase);
+  _ClothingItemSaveState createState() =>
+      _ClothingItemSaveState(image, clothingDatabase);
 }
 
-class _CroppedImageState extends State<CroppedImage> {
+class _ClothingItemSaveState extends State<ClothingItemSave> {
   final _formKey = GlobalKey<FormState>();
   ClothingDatabase clothingDatabase;
   UI.Image img;
@@ -29,18 +33,14 @@ class _CroppedImageState extends State<CroppedImage> {
   String categoryName = 'Shirt';
   String itemPath;
 
-  _CroppedImageState(UI.Image img, ClothingDatabase clothingDatabase) {
+  _ClothingItemSaveState(UI.Image img, ClothingDatabase clothingDatabase) {
     this.img = img;
     this.clothingDatabase = clothingDatabase;
-
-    // initState();
   }
 
-  // void initState() {
-  //   super.initState();
-  //   uiImageToUint8List();
-  // }
-
+  /**
+   * Writes the cropped image data to its file.
+   */
   void createImageFile() async {
     itemPath = generateImageName();
     final imageFile = await pathForImage(itemPath);
@@ -48,6 +48,10 @@ class _CroppedImageState extends State<CroppedImage> {
     await imageFile.writeAsBytes(bytes.buffer.asUint8List());
   }
 
+  /**
+   * Displays the cropped image, clothing name TextFormField, category drop down menu,
+   * and save button in that order.
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,8 +112,6 @@ class _CroppedImageState extends State<CroppedImage> {
                         name: clothingName,
                         category: categoryName,
                         imagePath: itemPath));
-                    // Scaffold.of(context)
-                    //     .showSnackBar(SnackBar(content: Text('Processing Data')));
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomePage()),
@@ -128,9 +130,11 @@ class DisplayImage extends CustomPainter {
   UI.Image im;
 
   DisplayImage(this.im);
+  /**
+   * Draws the cropped image on to the screen.
+   */
   @override
   void paint(UI.Canvas canvas, UI.Size size) {
-    // canvas.drawColor(Color(0xffBCABAE), BlendMode.src);
     canvas.drawImage(im, new Offset(0, 0), new Paint());
   }
 
