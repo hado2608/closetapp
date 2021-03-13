@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 //https://github.com/kaycobad/gallery_app
+//displays an expanded view of the image with information on the name and category of the clothing item
 
 class DetailsPage extends StatelessWidget {
   final File image;
@@ -82,9 +83,6 @@ class DetailsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 15,
                       ),
                     ],
                   )

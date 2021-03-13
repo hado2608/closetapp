@@ -8,18 +8,20 @@ import '../helpers.dart';
 import 'details_page.dart';
 
 //https://github.com/kaycobad/gallery_app
+//closet page that displays all the clothing items that the user has taken pictures of and cropped.
 
-class ViewOutfitsPage extends StatefulWidget {
+class ViewClothingItemsPage extends StatefulWidget {
   final ClothingDatabase clothingDatabase;
 
-  ViewOutfitsPage({Key key, @required this.clothingDatabase}) : super(key: key);
+  ViewClothingItemsPage({Key key, @required this.clothingDatabase})
+      : super(key: key);
 
   @override
   _ViewOutfitsPageState createState() =>
       _ViewOutfitsPageState(clothingDatabase);
 }
 
-class _ViewOutfitsPageState extends State<ViewOutfitsPage> {
+class _ViewOutfitsPageState extends State<ViewClothingItemsPage> {
   ClothingDatabase clothingDatabase;
   List<ClothingItem> clothingItems;
 
