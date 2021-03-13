@@ -13,7 +13,7 @@ class DisplayOutfit extends StatefulWidget {
   DisplayOutfit(
       {Key key,
       @required List<File> imageList,
-      ClothingDatabase clothingDatabase})
+      @required ClothingDatabase clothingDatabase})
       : super(key: key);
 
   @override

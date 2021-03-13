@@ -53,8 +53,9 @@ class _CombineClothesPageState extends State<CombineClothesPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            DisplayOutfit(imageList: [shirt, bottom, shoes])),
+                        builder: (context) => DisplayOutfit(
+                            imageList: [shirt, bottom, shoes],
+                            clothingDatabase: clothingDatabase)),
                   );
                 },
                 child: Text('Save'),

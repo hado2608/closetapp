@@ -127,7 +127,7 @@ class DisplayImage extends CustomPainter {
   DisplayImage(this.im);
   @override
   void paint(UI.Canvas canvas, UI.Size size) {
-    canvas.drawColor(Color(0xffBCABAE), BlendMode.src);
+    // canvas.drawColor(Color(0xffBCABAE), BlendMode.src);
     canvas.drawImage(im, new Offset(0, 0), new Paint());
   }
 
