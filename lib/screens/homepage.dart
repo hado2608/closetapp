@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
             child: Text(
-              'View Outfits',
+              'View Clothing Items',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onPressed: () {

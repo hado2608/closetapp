@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'categoryscreen.dart';
 import 'package:flutter/material.dart';
 
 //https://github.com/kaycobad/gallery_app
@@ -78,24 +77,6 @@ class DetailsPage extends StatelessWidget {
                           color: Color(0xff716969),
                           child: Text(
                             'Back',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                        child: FlatButton(
-                          onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => CategoryScreen())),
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          color: Color(0xff716969),
-                          child: Text(
-                            'Edit',
                             style: TextStyle(
                               color: Colors.white,
                             ),
