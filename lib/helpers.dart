@@ -7,9 +7,7 @@ String generateImageName() {
   return Uuid().v4() + '.png';
 }
 
-/**
- * Gets the corresponding image file from the directory.
- */
+/// Gets the corresponding image file from the directory.
 Future<File> pathForImage(String imgFileName) async {
   final directory = await getApplicationDocumentsDirectory();
   final path = directory.path + '/clothing';

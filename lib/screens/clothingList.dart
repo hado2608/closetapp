@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../clothingdatabase.dart';
 
+/// A list of list of clothing categories
 class ClothingList extends StatefulWidget {
   final ClothingDatabase clothingDatabase;
   final void Function(File, File, File) onOutfitChanged;
@@ -29,20 +30,22 @@ class _ClothingListState extends State<ClothingList> {
   File selectedBottoms;
   File selectedShoes;
   void Function(File, File, File) onOutfitChanged;
-
   ClothingDatabase clothingDatabase;
+
   _ClothingListState(ClothingDatabase clothingDatabase,
       void Function(File, File, File) onOutfitChanged) {
     this.clothingDatabase = clothingDatabase;
     this.onOutfitChanged = onOutfitChanged;
   }
 
+  ///Initializes clothingItemList's state
   @override
   void initState() {
     super.initState();
     initClothingItemList();
   }
 
+  /// Initializes clothingItemList by asigning the data to local variables
   void initClothingItemList() async {
     clothingDatabase
         .getClothingCategoryItems("Shirt")
@@ -61,6 +64,7 @@ class _ClothingListState extends State<ClothingList> {
             }));
   }
 
+  ///Get the image of clothing from the list of files
   Future<List<File>> getClothingItemImageHelper(List<ClothingItem> c) async {
     List<File> a = [];
     for (ClothingItem i in c) {
@@ -68,12 +72,13 @@ class _ClothingListState extends State<ClothingList> {
     }
     //deleting a[0] results in the categorySwipe objects not appearing
     // ignore: unnecessary_statements
-    a[0];
+    a[0]; //this changes to a range error after we cleaned up the code
     return a;
 
     // return Future.wait(c.map((i) => pathForImage(i.imagePath)));
   }
 
+  /// A callback when a focused item is chosen
   void _doOutfitChangeCallback() {
     if (onOutfitChanged != null) {
       onOutfitChanged(selectedShirt, selectedBottoms, selectedShoes);
@@ -81,7 +86,6 @@ class _ClothingListState extends State<ClothingList> {
   }
 
   /// Stacks the 3 categoryswipe items (lists) on the screen
-
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(

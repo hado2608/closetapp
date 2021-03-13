@@ -3,16 +3,12 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-/**
- * Enables storage of clothingItems.
- * From https://flutter.dev/docs/cookbook/persistence/sqlite
- */
+/// Enables storage of clothingItems.
+/// From https://flutter.dev/docs/cookbook/persistence/sqlite
 class ClothingDatabase {
   Database database;
 
-  /**
-   * Initializes the database with one table for clothingItems.
-   */
+  /// Initializes the database with one table for clothingItems.
   void startDatabase() async {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -27,10 +23,8 @@ class ClothingDatabase {
     );
   }
 
-  /**
-   * Adds the give clothingItem to the clothes table of the database,
-   * replacing it if it already exists.
-   */
+  /// Adds the give clothingItem to the clothes table of the database,
+  /// replacing it if it already exists.
   Future<void> insert(ClothingItem clothingItem) async {
     final Database db = database;
 
@@ -41,9 +35,7 @@ class ClothingDatabase {
     );
   }
 
-  /**
-   * Retrieves all the ClothingItems from the ClothingItems table.
-   */
+  /// Retrieves all the ClothingItems from the ClothingItems table.
   Future<List<ClothingItem>> getClothingItems() async {
     final Database db = database;
 
@@ -60,9 +52,7 @@ class ClothingDatabase {
     });
   }
 
-  /**
-   * Retrieves all the ClothingItems of a given category from the ClothingItems table.
-   */
+  /// Retrieves all the ClothingItems of a given category from the ClothingItems table.
   Future<List<ClothingItem>> getClothingCategoryItems(String category) async {
     final Database db = database;
 
@@ -79,10 +69,8 @@ class ClothingDatabase {
     });
   }
 
-  /**
-   * Updates the corresponding ClothingItem in the clothes table of the database
-   * with a new ClothingItem.
-   */
+  /// Updates the corresponding ClothingItem in the clothes table of the database
+  /// with a new ClothingItem.
   Future<void> updateClothingItem(ClothingItem clothingItem) async {
     final db = database;
 
@@ -94,9 +82,7 @@ class ClothingDatabase {
     );
   }
 
-  /**
-   * Deletes a given ClothingItem from the clothes table of the database.
-   */
+  /// Deletes a given ClothingItem from the clothes table of the database.
   Future<void> deleteClothingItem(ClothingItem clothingItem) async {
     final db = database;
 

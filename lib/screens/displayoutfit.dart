@@ -6,6 +6,8 @@ import 'package:closetapp/screens/viewclothingitemspage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Displays the combined clothing items into a widget
+
 // ignore: must_be_immutable
 class DisplayOutfit extends StatefulWidget {
   List<File> imageList;
@@ -30,6 +32,8 @@ class _DisplayOutfitState extends State<DisplayOutfit> {
     this.clothingDatabase = clothingDatabase;
   }
 
+  ///The widget contains the displayed image and a save button to save the
+  ///image in the database
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(

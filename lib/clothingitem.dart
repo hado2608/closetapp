@@ -1,6 +1,4 @@
-/**
- * Represents a clothing item to be stored in the database.
- */
+/// Represents a clothing item to be stored in the database.
 class ClothingItem {
   String id;
   String name;

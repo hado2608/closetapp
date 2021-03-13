@@ -15,6 +15,12 @@ Path path = Path();
 Path path2 = Path()..fillType = PathFillType.evenOdd;
 final pathOffsets = <Offset>[];
 
+/// This class takes in an image as a canvas, enabling the cropping function on
+/// top of that image, and route the cropped image to the class ClothingItemSave
+///
+/// Paul helped with the cropping function, moving from storing offsets to
+/// storing paths
+
 class PaintingApp extends StatefulWidget {
   final XFile fileImage;
   final ClothingDatabase clothingDatabase;
@@ -48,20 +54,20 @@ class _PaintingAppState extends State<PaintingApp> {
     this.clothingDatabase = clothingDatabase;
   }
 
+  /// Initializes the state changes of the image
   void initState() {
     super.initState();
     init();
   }
 
+  ///Initializes the image
   Future<Null> init() async {
     final Uint8List data = await fileImage.readAsBytes();
     image = await getImage(data);
   }
 
-  /**
-   * Turns typed data into a UI image
-   * Adapted from https://stackoverflow.com/questions/59923245/flutter-convert-and-resize-asset-image-to-dart-ui-image
-   */
+  /// Turns typed data into a UI image
+  /// Adapted from https://stackoverflow.com/questions/59923245/flutter-convert-and-resize-asset-image-to-dart-ui-image
   Future<UI.Image> getImage(Uint8List img) {
     final Completer<UI.Image> completer = Completer();
     UI.decodeImageFromList(img, (UI.Image img) {
@@ -73,6 +79,8 @@ class _PaintingAppState extends State<PaintingApp> {
     return completer.future;
   }
 
+  /// Select the crop area of the image and return it as a new image to
+  /// ClothingItemSave class
   Future<UI.Image> cropSelection() async {
     PictureRecorder recorder = PictureRecorder();
     Canvas canvas = Canvas(recorder);
@@ -94,6 +102,7 @@ class _PaintingAppState extends State<PaintingApp> {
     return picture.toImage(image.width, image.height);
   }
 
+  /// Helper function that makes routing to ClothingItemSave works
   runCrop() {
     cropSelection().then((value) => Navigator.push(
         context,
@@ -102,6 +111,8 @@ class _PaintingAppState extends State<PaintingApp> {
                 image: value, clothingDatabase: clothingDatabase))));
   }
 
+  /// The main widget displayed on the app, allowing user to tap and draw with
+  /// GestureDetector, and displays other UX components on the cropping page
   @override
   Widget build(BuildContext context) {
     if (this.isImageLoaded) {
@@ -162,6 +173,9 @@ class _PaintingAppState extends State<PaintingApp> {
   }
 }
 
+/// Painting app that takes in an image as a canvas and a list of paths, and
+/// allows user to draw paths from that list on the image
+/// Reference: https://www.youtube.com/watch?v=yyHhloFMNNA
 class CropMarkPainter extends CustomPainter {
   UI.Image im;
   final List<Path> cropPaths;

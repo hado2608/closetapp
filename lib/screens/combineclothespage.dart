@@ -1,13 +1,12 @@
 import 'dart:io';
-
-import 'package:closetapp/screens/categoryswipe.dart';
-import 'package:closetapp/screens/viewclothingitemspage.dart';
 import 'package:flutter/material.dart';
 import 'package:closetapp/screens/clothingList.dart';
 import 'package:closetapp/clothingdatabase.dart';
 
 import 'displayoutfit.dart';
 
+///Combines items of clothing by displaying them in scrolling lists based on
+///their categories
 class CombineClothesPage extends StatefulWidget {
   final ClothingDatabase clothingDatabase;
   CombineClothesPage({Key key, @required this.clothingDatabase})
@@ -27,6 +26,8 @@ class _CombineClothesPageState extends State<CombineClothesPage> {
     this.clothingDatabase = clothingDatabase;
   }
 
+  ///The widget that displays scrolling lists and save the chosen items to
+  ///DisplayOutfit class
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +49,6 @@ class _CombineClothesPageState extends State<CombineClothesPage> {
               padding: EdgeInsets.all(20),
               child: FloatingActionButton(
                 backgroundColor: Color(0xff716969),
-                // style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
                 onPressed: () {
                   Navigator.push(
                     context,

@@ -1,13 +1,11 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../helpers.dart';
-import 'displayoutfit.dart';
 
+/// Create a scrolling list of files based on the category of the files
 class CategorySwipe extends StatefulWidget {
   final List<File> clothingItemList;
   final void Function(File) onItemSelected;
@@ -58,12 +56,12 @@ class _CategorySwipeState extends State<CategorySwipe> {
   }
 
   Widget _buildItemDetail() {
-      return Flexible(
-        child: Container(
-          height: MediaQuery.of(context).size.height / 4,
-          // child: Text("index $_focusedIndex"),
-        ),
-      );
+    return Flexible(
+      child: Container(
+        height: MediaQuery.of(context).size.height / 4,
+        // child: Text("index $_focusedIndex"),
+      ),
+    );
   }
 
   Widget _buildListItem(BuildContext context, int index) {
@@ -91,7 +89,6 @@ class _CategorySwipeState extends State<CategorySwipe> {
 
   double _itemWidth(BuildContext context) =>
       MediaQuery.of(context).size.width / 5;
-
 
   /// Creates a dynamic list of clothing items.
   /// Adapted from https://pub.dev/packages/scroll_snap_list

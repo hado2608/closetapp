@@ -7,10 +7,8 @@ import 'package:closetapp/helpers.dart';
 import 'package:closetapp/screens/homepage.dart';
 import 'package:flutter/material.dart';
 
-/**
- * Represents the screen allowing the user to save the clothingItem 
- * in the database.
- */
+/// Represents the screen allowing the user to save the clothingItem
+/// in the database.
 class ClothingItemSave extends StatefulWidget {
   final UI.Image image;
   final ClothingDatabase clothingDatabase;
@@ -38,9 +36,7 @@ class _ClothingItemSaveState extends State<ClothingItemSave> {
     this.clothingDatabase = clothingDatabase;
   }
 
-  /**
-   * Writes the cropped image data to its file.
-   */
+  /// Writes the cropped image data to its file.
   void createImageFile() async {
     itemPath = generateImageName();
     final imageFile = await pathForImage(itemPath);
@@ -48,10 +44,8 @@ class _ClothingItemSaveState extends State<ClothingItemSave> {
     await imageFile.writeAsBytes(bytes.buffer.asUint8List());
   }
 
-  /**
-   * Displays the cropped image, clothing name TextFormField, category drop down menu,
-   * and save button in that order.
-   */
+  /// Displays the cropped image, clothing name TextFormField, category drop down menu,
+  /// and save button in that order.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,9 +124,8 @@ class DisplayImage extends CustomPainter {
   UI.Image im;
 
   DisplayImage(this.im);
-  /**
-   * Draws the cropped image on to the screen.
-   */
+
+  /// Draws the cropped image on to the screen.
   @override
   void paint(UI.Canvas canvas, UI.Size size) {
     canvas.drawImage(im, new Offset(0, 0), new Paint());

@@ -11,7 +11,7 @@ Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
 }
 
-//main navigation page with logo and buttons for each of the three main pages: View, mix & match, and add.
+//The main navigation page with logo and buttons for each of the three main pages: View, mix & match, and add.
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -22,18 +22,21 @@ class _HomePageState extends State<HomePage> {
   CameraDescription firstCamera;
   final ClothingDatabase clothingDatabase = new ClothingDatabase();
 
+  ///Initializes the states of the camera and the clothing database
   void initState() {
     super.initState();
     cameraInit();
     clothingDatabase.startDatabase();
   }
 
+  ///Initializes the camera
   void cameraInit() async {
     WidgetsFlutterBinding.ensureInitialized();
     cameras = await availableCameras();
     firstCamera = cameras.first;
   }
 
+  /// The main widget displaying the homepage
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,51 +93,4 @@ class _HomePageState extends State<HomePage> {
       )),
     );
   }
-}
-
-class MainButtonClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path()
-      ..moveTo(80, 300)
-      ..lineTo(200, 180)
-      ..lineTo(320, 300)
-      ..lineTo(200, 420);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return true;
-  }
-}
-
-class LeftButtonClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path()
-      ..moveTo(40, 200)
-      ..lineTo(90, 150)
-      ..lineTo(140, 200)
-      ..lineTo(90, 250);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
-
-class RightButtonClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path()
-      ..moveTo(260, 400)
-      ..lineTo(310, 350)
-      ..lineTo(360, 400)
-      ..lineTo(310, 450);
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

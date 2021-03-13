@@ -5,10 +5,8 @@ import 'package:closetapp/clothingdatabase.dart';
 import 'package:closetapp/screens/paintingapp.dart';
 import 'package:flutter/material.dart';
 
-/**
- * Adds camera functionality
- * From https://flutter.dev/docs/cookbook/plugins/picture-using-camera
- */
+/// Adds camera functionality
+/// From https://flutter.dev/docs/cookbook/plugins/picture-using-camera
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
   final ClothingDatabase clothingDatabase;
@@ -33,9 +31,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
     this.clothingDatabase = clothingDatabase;
   }
 
-  /**
-   * Initializes the camera with settings.
-   */
+  /// Initializes the camera with settings.
   @override
   void initState() {
     super.initState();
@@ -47,19 +43,15 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
     _initializeControllerFuture = _controller.initialize();
   }
 
-  /**
-   * Disposes the controller when the widget is disposed.
-   */
+  /// Disposes the controller when the widget is disposed.
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-  /**
-   * Waits for the camera to be initialized, displays the camera view, and saves image data
-   * in a cross-platform file. Passes the image file to PaintingApp.
-   */
+  /// Waits for the camera to be initialized, displays the camera view, and saves image data
+  /// in a cross-platform file. Passes the image file to PaintingApp.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
