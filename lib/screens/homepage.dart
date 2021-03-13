@@ -2,7 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:closetapp/clothingdatabase.dart';
 import 'package:flutter/material.dart';
 
-import 'package:closetapp/screens/viewoutfitspage.dart';
+import 'package:closetapp/screens/viewclothingitemspage.dart';
 import 'package:closetapp/screens/combineclothespage.dart';
 import 'package:closetapp/screens/takepicturescreen.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +11,7 @@ Future<String> loadAsset() async {
   return await rootBundle.loadString('assets/config.json');
 }
 
+//main navigation page with logo and buttons for each of the three main pages: View, mix & match, and add.
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -47,15 +48,15 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
             child: Text(
-              'View Outfits',
+              'View Clothing Items',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ViewOutfitsPage(clothingDatabase: clothingDatabase)),
+                    builder: (context) => ViewClothingItemsPage(
+                        clothingDatabase: clothingDatabase)),
               );
             },
           ),

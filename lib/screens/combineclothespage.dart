@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:closetapp/screens/categoryswipe.dart';
-import 'package:closetapp/screens/viewoutfitspage.dart';
+import 'package:closetapp/screens/viewclothingitemspage.dart';
 import 'package:flutter/material.dart';
 import 'package:closetapp/screens/clothingList.dart';
 import 'package:closetapp/clothingdatabase.dart';

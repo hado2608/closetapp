@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:closetapp/clothingdatabase.dart';
-import 'package:closetapp/screens/viewoutfitspage.dart';
+import 'package:closetapp/screens/viewclothingitemspage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +46,7 @@ class _DisplayOutfitState extends State<DisplayOutfit> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ViewOutfitsPage(
+                      builder: (context) => ViewClothingItemsPage(
                             clothingDatabase: clothingDatabase,
                           )),
                 );

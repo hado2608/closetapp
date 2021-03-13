@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:closetapp/clothingitem.dart';
 import 'package:closetapp/helpers.dart';
 import 'package:closetapp/screens/categoryswipe.dart';

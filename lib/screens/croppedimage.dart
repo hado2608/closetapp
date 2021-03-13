@@ -55,68 +55,71 @@ class _CroppedImageState extends State<CroppedImage> {
           title: Text("Your Cropped Item"),
           backgroundColor: Color(0xff716969),
         ),
-        body: Column(children: <Widget>[
-          Form(
-              key: _formKey,
-              child: Column(children: <Widget>[
-                TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please name your clothing item.';
-                      } else {
-                        clothingName = value;
-                        return null;
-                      }
-                    },
-                    decoration: InputDecoration(
-                      labelText: 'Clothing Name',
-                    )),
-                DropdownButton(
-                    value: categoryName,
-                    items: [
-                      DropdownMenuItem(
-                        child: Text('Shirt'),
-                        value: 'Shirt',
-                      ),
-                      DropdownMenuItem(
-                        child: Text('Bottoms'),
-                        value: 'Bottoms',
-                      ),
-                      DropdownMenuItem(child: Text('Shoes'), value: 'Shoes')
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        categoryName = value;
-                      });
-                    }),
-              ])),
+        body: Stack(children: <Widget>[
           CustomPaint(
             painter: DisplayImage(img),
-            child: Container(),
+            child: Center(),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                createImageFile();
-                clothingDatabase.insert(new ClothingItem(
-                    id: "$clothingName" +
-                        (new Random().nextInt(1000)).toString(),
-                    name: clothingName,
-                    category: categoryName,
-                    imagePath: itemPath));
-                // Scaffold.of(context)
-                //     .showSnackBar(SnackBar(content: Text('Processing Data')));
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              } else {
-                return null;
-              }
-            },
-            child: Text('Save'),
-          )
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: Form(
+                  key: _formKey,
+                  child: Column(children: <Widget>[
+                    TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please name your clothing item.';
+                          } else {
+                            clothingName = value;
+                            return null;
+                          }
+                        },
+                        decoration:
+                            InputDecoration(labelText: 'Clothing Name')),
+                    DropdownButton(
+                        value: categoryName,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text('Shirt'),
+                            value: 'Shirt',
+                          ),
+                          DropdownMenuItem(
+                            child: Text('Bottoms'),
+                            value: 'Bottoms',
+                          ),
+                          DropdownMenuItem(child: Text('Shoes'), value: 'Shoes')
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            categoryName = value;
+                          });
+                        }),
+                  ]))),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Color(0xff716969)),
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    createImageFile();
+                    clothingDatabase.insert(new ClothingItem(
+                        id: "$clothingName" +
+                            (new Random().nextInt(1000)).toString(),
+                        name: clothingName,
+                        category: categoryName,
+                        imagePath: itemPath));
+                    // Scaffold.of(context)
+                    //     .showSnackBar(SnackBar(content: Text('Processing Data')));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  } else {
+                    return null;
+                  }
+                },
+                child: Text('Save'),
+              ))
         ]));
   }
 }
