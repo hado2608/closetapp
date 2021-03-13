@@ -83,6 +83,9 @@ class DetailsPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        width: 15,
+                      ),
                     ],
                   )
                 ],
