@@ -87,19 +87,6 @@ class DetailsPage extends StatelessWidget {
                       SizedBox(
                         width: 15,
                       ),
-                      Expanded(
-                        child: FlatButton(
-                          onPressed: () {},
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          color: Color(0xff716969),
-                          child: Text(
-                            'Edit',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   )
                 ],
